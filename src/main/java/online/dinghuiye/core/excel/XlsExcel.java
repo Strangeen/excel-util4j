@@ -3,7 +3,6 @@ package online.dinghuiye.core.excel;
 
 import online.dinghuiye.api.excel.AbstractExcel;
 import online.dinghuiye.core.entity.SheetInfo;
-import org.apache.commons.collections4.map.HashedMap;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
@@ -30,7 +29,7 @@ public class XlsExcel extends AbstractExcel {
 
     private Workbook wb;
     private List<Sheet> sheetList = new ArrayList<>();
-    private Map<String, Integer> sheetNameIndexMap = new HashedMap<>(); // map<sheetName, sheetIndex>
+    private Map<String, Integer> sheetNameIndexMap = new HashMap<>(); // map<sheetName, sheetIndex>
 
     private Sheet currentSheet;
 
