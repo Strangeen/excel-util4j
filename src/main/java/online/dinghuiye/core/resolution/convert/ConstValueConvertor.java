@@ -1,8 +1,7 @@
 package online.dinghuiye.core.resolution.convert;
 
 import online.dinghuiye.api.resolution.convert.Convertor;
-import online.dinghuiye.core.annotation.convert.BlankToNull;
-import org.apache.commons.lang3.StringUtils;
+import online.dinghuiye.core.annotation.convert.ConstValue;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -10,13 +9,11 @@ import java.lang.reflect.Field;
 import java.util.Map;
 
 /**
- * Created by Strangeen on 2017/7/1.
- * <p>
- * 空串或null转换为null
+ * Created by Strangeen on 2017/8/3.
  */
-public class BlankToNullConvertor implements Convertor {
+public class ConstValueConvertor implements Convertor {
 
-    private static final Logger logger = LoggerFactory.getLogger(BlankToNullConvertor.class);
+    private static final Logger logger = LoggerFactory.getLogger(ConstValueConvertor.class);
 
     @Override
     public Object convert(Object obj, Field field, Map<String, String> excelRecordMap) {
@@ -24,11 +21,11 @@ public class BlankToNullConvertor implements Convertor {
         logger.trace(new StringBuffer()
                 .append("field: ").append(field.getName())
                 .append(", obj: ").append(obj)
-                .append(" run BlankToNullConvertor").toString());
+                .append(" run ConstValueConvertor").toString());
 
-        if (obj == null) return obj;
-        if (StringUtils.isBlank(obj.toString())) return null;
+        String constValue = field.getAnnotation(ConstValue.class).value();
+
         //return ConvertFactory.convertToType(field, obj);
-        return obj;
+        return constValue;
     }
 }

@@ -1,7 +1,7 @@
 package online.dinghuiye.core.annotation.convert;
 
 import online.dinghuiye.api.resolution.convert.Convertor;
-import online.dinghuiye.core.consts.Consts;
+import online.dinghuiye.core.resolution.convert.ValueConvertConvertor;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -13,7 +13,7 @@ import java.lang.annotation.Target;
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
-@Convert(value = Consts.CONVERTOR_PACKAGE + "ValueConvertConvertor")
+@Convert(ValueConvertConvertor.class)
 public @interface ValueConvert {
 
     /**

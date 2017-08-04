@@ -7,8 +7,10 @@ import org.slf4j.LoggerFactory;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
-import java.lang.reflect.Type;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Strangeen on 2017/6/30.
@@ -16,6 +18,7 @@ import java.util.*;
 public class ConvertFactory {
 
     private static final Logger logger = LoggerFactory.getLogger(ConvertFactory.class);
+    private static Map<Class, Convertor> convertorCache = new HashMap<Class, Convertor>();
 
     /**
      * 按照field的注解顺序获取，得到顺序的Convertor（转换器），并返回Convertor的集合
@@ -23,7 +26,7 @@ public class ConvertFactory {
      * @param field
      * @return Convertor集合
      */
-    public static List<Convertor> getConvertors(Field field) {
+    protected static List<Convertor> getConvertors(Field field) {
 
         try {
             List<Convertor> convertorList = new ArrayList<>();
@@ -34,10 +37,19 @@ public class ConvertFactory {
                     continue;
                 }
 
-                Class<? extends Convertor> convertorClazz =
+                /*Class<? extends Convertor> convertorClazz =
                         (Class<? extends Convertor>)
-                                Class.forName(convertAnno.value());
-                convertorList.add(convertorClazz.newInstance()); // TODO 如何要求实现类使用单例模式
+                                Class.forName(convertAnno.value());*/
+                Class<? extends Convertor> convertorClazz = convertAnno.value();
+
+                //convertorList.add(convertorClazz.newInstance());
+                // convertor通过缓存实现单例模式
+                Convertor convertor = convertorCache.get(convertorClazz);
+                if (convertor == null) {
+                    convertorCache.put(convertorClazz, convertorClazz.newInstance());
+                    convertor = convertorCache.get(convertorClazz);
+                }
+                convertorList.add(convertor);
             }
 
             return convertorList;
@@ -48,9 +60,13 @@ public class ConvertFactory {
         }
     }
 
-
     // 类型不同，均将obj转为String进行转换
-    public static <T> Object convertToType(Field field, Object obj) {
+    protected static <T> Object convertToType(Field field, Object obj) {
+
+        logger.trace(new StringBuffer()
+                .append("field: ").append(field.getName())
+                .append(", obj: ").append(obj)
+                .append(" run ConvertFactory.convertToType").toString());
 
         Class<?> fieldTypeClass = field.getType();
 
@@ -114,5 +130,4 @@ public class ConvertFactory {
 
         }
     }
-
 }

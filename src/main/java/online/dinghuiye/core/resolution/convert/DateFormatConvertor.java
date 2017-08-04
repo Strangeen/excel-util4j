@@ -23,6 +23,12 @@ public class DateFormatConvertor implements Convertor {
 
     @Override
     public Object convert(Object obj, Field field, Map<String, String> excelRecordMap) {
+
+        logger.trace(new StringBuffer()
+                .append("field: ").append(field.getName())
+                .append(", obj: ").append(obj)
+                .append(" run DateFormatConvertor").toString());
+
         if (obj == null) return obj;
         Date date;
         try {

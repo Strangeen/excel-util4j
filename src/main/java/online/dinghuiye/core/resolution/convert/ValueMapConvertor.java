@@ -21,6 +21,11 @@ public class ValueMapConvertor implements Convertor {
     @Override
     public Object convert(Object obj, Field field, Map<String, String> excelRecordMap) {
 
+        logger.trace(new StringBuffer()
+                .append("field: ").append(field.getName())
+                .append(", obj: ").append(obj)
+                .append(" run ValueMapConvertor").toString());
+
         String jsonStr = field.getAnnotation(ValueMap.class).value();
         if (StringUtils.isBlank(jsonStr))
             throw new RuntimeException("field注解ValueMap值为空，filed：" + field.getName());
@@ -37,6 +42,7 @@ public class ValueMapConvertor implements Convertor {
         if (obj != null) {
             obj = json.get(obj.toString());
         }
-        return ConvertFactory.convertToType(field, obj);
+        //return ConvertFactory.convertToType(field, obj);
+        return obj;
     }
 }

@@ -1,6 +1,6 @@
 package online.dinghuiye.core.annotation.convert;
 
-import online.dinghuiye.core.consts.Consts;
+import online.dinghuiye.core.resolution.convert.BlankToNullConvertor;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -12,6 +12,6 @@ import java.lang.annotation.Target;
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
-@Convert(value = Consts.CONVERTOR_PACKAGE + "BlankToNullConvertor")
+@Convert(BlankToNullConvertor.class)
 public @interface BlankToNull {
 }

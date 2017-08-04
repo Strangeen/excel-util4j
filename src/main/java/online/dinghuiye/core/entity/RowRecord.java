@@ -1,5 +1,6 @@
 package online.dinghuiye.core.entity;
 
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -52,13 +53,16 @@ public class RowRecord {
      * @return map中对应key原有的值，如果没有值则返回null
      */
     public String set(String key, String value) {
+        if (excelRecordMap == null) excelRecordMap = new HashMap<String, String>();
         String lastValue = excelRecordMap.get(key);
         excelRecordMap.put(key, value);
         return lastValue;
     }
 
     public String get(String key) {
-        return excelRecordMap.get(key);
+        if (excelRecordMap != null)
+            return excelRecordMap.get(key);
+        return null;
     }
 
     /**
@@ -67,13 +71,26 @@ public class RowRecord {
      * @param obj 实体对象
      * @return map中对应key原有的值，如果没有值则返回null
      */
-    public <T> T set(Class<T> pojo, T obj) {
-        T lastValue = (T) pojoRecordMap.get(pojo);
+    public Object set(Class<?> pojo, Object obj) {
+        if (pojoRecordMap == null) pojoRecordMap = new HashMap<Class<?>, Object>();
+        Object lastValue = pojoRecordMap.get(pojo);
         pojoRecordMap.put(pojo, obj);
         return lastValue;
     }
 
     public <T> T get(Class<T> pojo) {
-        return (T) pojoRecordMap.get(pojo);
+        if (pojoRecordMap != null)
+            return (T) pojoRecordMap.get(pojo);
+        return null;
+    }
+
+    @Override
+    public String toString() {
+        return "RowRecord{" +
+                "rowNo=" + rowNo +
+                ", result=" + result +
+                ", excelRecordMap=" + excelRecordMap +
+                ", pojoRecordMap=" + pojoRecordMap +
+                '}';
     }
 }

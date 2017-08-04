@@ -25,58 +25,84 @@ import java.util.SimpleTimeZone;
  */
 public class TestConvertor {
 
+    private Field field;
+    private List<Convertor> convertorList;
+    private Object obj;
+
     @Test
     public void testConvert() throws NoSuchFieldException, ParseException {
 
-        Field field;
-        List<Convertor> convertorList;
-        Object obj;
-
         // @ValueConver多重Convert注解
         // @BlankToNull
-        field = User.class.getDeclaredField("name");
-        convertorList = ConvertFactory.getConvertors(field);
-        obj = "   ";
-        for (Convertor c : convertorList)
-            obj = c.convert(obj, field, null);
-        Assert.assertEquals(null, obj);
+        {
+            field = User.class.getDeclaredField("name");
+            convertorList = ConvertFactory.getConvertors(field);
+            obj = "   ";
+            for (Convertor c : convertorList)
+                obj = c.convert(obj, field, null);
+            Assert.assertEquals(null, obj);
+        }
 
         // @ValueMap
-        field = User.class.getDeclaredField("sex");
-        convertorList = ConvertFactory.getConvertors(field);
-        obj = 0;
-        for (Convertor c : convertorList)
-            obj = c.convert(obj, field, null);
-        Assert.assertEquals("female", obj);
+        {
+            field = User.class.getDeclaredField("sex");
+            convertorList = ConvertFactory.getConvertors(field);
+            obj = 0;
+            for (Convertor c : convertorList)
+                obj = c.convert(obj, field, null);
+            Assert.assertEquals("female", obj);
+        }
 
         // @DateFormat
-        field = User.class.getDeclaredField("birthday");
-        convertorList = ConvertFactory.getConvertors(field);
-        obj = "1988-08-21 10:10:10";
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        Date date = sdf.parse(obj.toString());
-        for (Convertor c : convertorList)
-            obj = c.convert(obj, field, null);
-        Assert.assertEquals(date, obj);
+        {
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+            field = User.class.getDeclaredField("birthday");
+            convertorList = ConvertFactory.getConvertors(field);
+            obj = "1988-08-21 10:10:10";
+            Date date = sdf.parse(obj.toString());
+            for (Convertor c : convertorList)
+                obj = c.convert(obj, field, null);
+            Assert.assertEquals(date, obj);
+        }
 
         // @ValueConver自定义Convertor
-        field = User.class.getDeclaredField("scoreList");
+        {
+            field = User.class.getDeclaredField("scoreList");
+            convertorList = ConvertFactory.getConvertors(field);
+            obj = "15,16,17,18";
+            for (Convertor c : convertorList)
+                obj = c.convert(obj, field, null);
+            List<Integer> list = new ArrayList<>();
+            list.add(15);
+            list.add(16);
+            list.add(17);
+            list.add(18);
+            Assert.assertEquals(true, Util.listEquals(list, (List<?>) obj,
+                    new ListValueConvertor() {
+                        @Override
+                        public Object change(Object obj) {
+                            return obj;
+                        }
+                    })
+            );
+        }
+    }
+
+
+    @Test
+    // @ConstValue
+    // @DateFormat
+    // 复合convertor
+    public void testMultiConvertor() throws NoSuchFieldException, ParseException {
+
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+
+        field = User.class.getDeclaredField("modifyTime");
         convertorList = ConvertFactory.getConvertors(field);
-        obj = "15,16,17,18";
+        obj = null;
         for (Convertor c : convertorList)
             obj = c.convert(obj, field, null);
-        List<Integer> list = new ArrayList<>();
-        list.add(15);
-        list.add(16);
-        list.add(17);
-        list.add(18);
-        Assert.assertEquals(true, Util.listEquals(list, (List<?>) obj,
-                new ListValueConvertor() {
-                    @Override
-                    public Object change(Object obj) {
-                        return obj;
-                    }
-                })
-        );
+        Assert.assertEquals(sdf.parse("2017-12-12"), obj);
     }
 }
