@@ -1,7 +1,9 @@
 package online.dinghuiye.core.validation;
 
 import online.dinghuiye.api.validation.RowRecordValidator;
-import online.dinghuiye.core.entity.RowRecord;
+import online.dinghuiye.api.entity.ResultStatus;
+import online.dinghuiye.api.entity.RowRecord;
+import online.dinghuiye.api.entity.RowRecordHandleResult;
 import online.dinghuiye.core.resolution.torowrecord.RowRecordHandlerSinglePojoImpl;
 import online.dinghuiye.core.resolution.torowrecord.testcase.Student;
 import online.dinghuiye.core.validation.testcase.SchoolMan;
@@ -71,20 +73,59 @@ public class TestRowRecordValidatorImpl {
 
     @Test
     public void testValid() {
-        validator.valid(rowRecordList);
 
-        Assert.assertEquals(
-                "类别不能为空;人物简介不能为空;姓名不能为空;性别不能为空;",
-                rowRecordList.get(0).getResult().getMsg()
-        );
-        Assert.assertEquals(
-                "类别填写不正确;性别填写不正确;",
-                rowRecordList.get(1).getResult().getMsg()
-        );
-        Assert.assertEquals(
-                "电话填写不正确;班级请最多填写25个字;专业请最多填写50个字;" +
-                        "学院请最多填写50个字;人物简介请最多填写100个字;姓名请最多填写11个字;",
-                rowRecordList.get(2).getResult().getMsg()
-        );
+        validator.valid(rowRecordList);
+        {
+
+            Assert.assertEquals(
+                    true,
+                    setsEqual(
+                            arrayToSet(new String[]{
+                                    "类别不能为空","人物简介不能为空","姓名不能为空","性别不能为空"}),
+                            arrayToSet(rowRecordList.get(0).getResult().getMsg().split(";"))
+                    )
+            );
+        }
+
+        {
+            Assert.assertEquals(
+                    true,
+                    setsEqual(
+                            arrayToSet(new String[]{
+                                    "类别填写不正确","性别填写不正确"}),
+                            arrayToSet(rowRecordList.get(1).getResult().getMsg().split(";"))
+                    )
+            );
+        }
+
+        {
+            Assert.assertEquals(
+                    true,
+                    setsEqual(
+                            arrayToSet(new String[]{
+                                    "电话填写不正确","班级请最多填写25个字",
+                                    "专业请最多填写50个字","学院请最多填写50个字",
+                                    "人物简介请最多填写100个字","姓名请最多填写11个字"}),
+                            arrayToSet(rowRecordList.get(2).getResult().getMsg().split(";"))
+                    )
+            );
+        }
+    }
+
+    private <T> boolean setsEqual(Set<T> s1, Set<T> s2) {
+
+        if (s1.size() != s2.size()) return false;
+        for (T t : s1) {
+            if (!s2.contains(t)) return false;
+        }
+        return true;
+    }
+
+    private <T> Set<T> arrayToSet(T[] ts) {
+
+        Collection<T> cs = Arrays.asList(ts);
+        Set<T> set = new HashSet<T>();
+        set.addAll(cs);
+        return set;
     }
 }

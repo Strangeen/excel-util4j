@@ -3,9 +3,9 @@ package online.dinghuiye.core.resolution.torowrecord;
 import online.dinghuiye.api.resolution.torowrecord.RowRecordHandler;
 import online.dinghuiye.core.annotation.excel.SheetTitleName;
 import online.dinghuiye.core.annotation.excel.Transient;
-import online.dinghuiye.core.entity.ResultStatus;
-import online.dinghuiye.core.entity.RowRecord;
-import online.dinghuiye.core.entity.RowRecordHandleResult;
+import online.dinghuiye.api.entity.ResultStatus;
+import online.dinghuiye.api.entity.RowRecord;
+import online.dinghuiye.api.entity.RowRecordHandleResult;
 import online.dinghuiye.core.resolution.convert.ConvertKit;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,18 +25,20 @@ public class RowRecordHandlerSinglePojoImpl implements RowRecordHandler {
     private static final Logger logger = LoggerFactory.getLogger(RowRecordHandlerSinglePojoImpl.class);
 
     @Override
-    public List<RowRecord> handle(List<Map<String, String>> excelRowDataList, Class<?>... pojos) {
+    public List<RowRecord> handle(List<RowRecord> rowRecordList, Class<?>... pojos) {
 
-        List<RowRecord> rowRecordList = new ArrayList<RowRecord>();
-        for (int row = 0; row < excelRowDataList.size(); row ++) {
-
-            // +2才对应excel行号，row起始为0，+1表示其实从1开始，再+1表示表头行，所以共+2
-            RowRecord rowRecord = rowRecordCreate(excelRowDataList.get(row), row + 2);
-            pojoHandle(rowRecord, pojos);
-            rowRecordList.add(rowRecord);
+//        List<RowRecord> rowRecordList = new ArrayList<RowRecord>();
+        for (RowRecord rowRecord : rowRecordList) {
+            //rowRecordList.add(handle(excelRowDataList.get(row), row + 2, pojos));
+            handle(rowRecord, pojos);
         }
-
         return rowRecordList;
+    }
+
+    @Override
+    public RowRecord handle(RowRecord rowRecord, Class<?>[] pojos) {
+//        RowRecord rowRecord = rowRecordCreate(excelRowData, row);
+        return pojoHandle(rowRecord, pojos);
     }
 
     /**
@@ -45,7 +47,8 @@ public class RowRecordHandlerSinglePojoImpl implements RowRecordHandler {
      * @param row
      * @return
      */
-    private RowRecord rowRecordCreate(Map<String, String> excelRowData, int row) {
+    @Override
+    public RowRecord rowRecordCreate(Map<String, String> excelRowData, Integer row) {
         RowRecord rowRecord = new RowRecord();
         rowRecord.setRowNo(row);
         rowRecord.setExcelRecordMap(excelRowData);

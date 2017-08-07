@@ -2,7 +2,6 @@ package online.dinghuiye.core.resolution.convert;
 
 import online.dinghuiye.api.resolution.convert.Convertor;
 import online.dinghuiye.core.annotation.convert.DateFormat;
-import online.dinghuiye.core.entity.RowRecord;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

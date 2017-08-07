@@ -2,7 +2,6 @@ package online.dinghuiye.core.resolution.convert;
 
 import online.dinghuiye.api.resolution.convert.Convertor;
 import online.dinghuiye.core.annotation.convert.ValueConvert;
-import online.dinghuiye.core.entity.RowRecord;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

@@ -1,9 +1,9 @@
 package online.dinghuiye.core.validation;
 
 import online.dinghuiye.api.validation.RowRecordValidator;
-import online.dinghuiye.core.entity.ResultStatus;
-import online.dinghuiye.core.entity.RowRecord;
-import online.dinghuiye.core.entity.RowRecordHandleResult;
+import online.dinghuiye.api.entity.ResultStatus;
+import online.dinghuiye.api.entity.RowRecord;
+import online.dinghuiye.api.entity.RowRecordHandleResult;
 import online.dinghuiye.core.resolution.torowrecord.RowRecordKit;
 
 import javax.validation.ConstraintViolation;
@@ -35,29 +35,34 @@ public class RowRecordValidatorImpl implements RowRecordValidator {
     public void valid(List<RowRecord> rowRecordList) {
 
         for (RowRecord rowRecord : rowRecordList) {
+            valid(rowRecord);
+        }
+    }
 
-            // 解析成功的才进行验证
-            if (rowRecord.getResult() != null &&
-                    rowRecord.getResult().getResult() != ResultStatus.SUCCESS) continue;
 
-            Map<Class<?>, Object> pojoObjMap = rowRecord.getPojoRecordMap();
-            for (Map.Entry<Class<?>, Object> pojoObjEntry : pojoObjMap.entrySet()) {
-                Set<ConstraintViolation<Object>> validResSet = validator.validate(pojoObjEntry.getValue());
-                if (validResSet.size() > 0) {
-                    StringBuffer msg = new StringBuffer();
-                    Iterator<ConstraintViolation<Object>> i = validResSet.iterator();
-                    while (i.hasNext()) {
-                        ConstraintViolation<Object> cv = i.next();
-                        msg.append(
-                                RowRecordKit.getSheetTitleNameByFieldName(
-                                        pojoObjEntry.getKey(),
-                                        cv.getPropertyPath().iterator().next().getName()))
-                                .append(cv.getMessage()).append(";");
-                    }
-                    rowRecord.setResult(new RowRecordHandleResult(ResultStatus.FAIL, msg.toString()));
+    @Override
+    public void valid(RowRecord rowRecord) {
+
+        // 解析成功的才进行验证
+        if (rowRecord.getResult() != null &&
+                rowRecord.getResult().getResult() != ResultStatus.SUCCESS) return;
+
+        Map<Class<?>, Object> pojoObjMap = rowRecord.getPojoRecordMap();
+        for (Map.Entry<Class<?>, Object> pojoObjEntry : pojoObjMap.entrySet()) {
+            Set<ConstraintViolation<Object>> validResSet = validator.validate(pojoObjEntry.getValue());
+            if (validResSet.size() > 0) {
+                StringBuffer msg = new StringBuffer();
+                Iterator<ConstraintViolation<Object>> i = validResSet.iterator();
+                while (i.hasNext()) {
+                    ConstraintViolation<Object> cv = i.next();
+                    msg.append(
+                            RowRecordKit.getSheetTitleNameByFieldName(
+                                    pojoObjEntry.getKey(),
+                                    cv.getPropertyPath().iterator().next().getName()))
+                            .append(cv.getMessage()).append(";");
                 }
+                rowRecord.setResult(new RowRecordHandleResult(ResultStatus.FAIL, msg.toString()));
             }
         }
-
     }
 }

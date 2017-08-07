@@ -1,6 +1,6 @@
 package online.dinghuiye.core.resolution.torowrecord;
 
-import online.dinghuiye.core.entity.RowRecord;
+import online.dinghuiye.api.entity.RowRecord;
 import online.dinghuiye.core.resolution.torowrecord.testcase.Student;
 import org.junit.Assert;
 import org.junit.Before;
@@ -44,10 +44,19 @@ public class TestRowRecordHandleerSinglePojoImpl {
     @Test
     public void testHandle() {
         RowRecordHandlerSinglePojoImpl handler = new RowRecordHandlerSinglePojoImpl();
-        List<RowRecord> rowRecordList = handler.handle(excelRowDataList, Student.class);
-        /*for (RowRecord rowRecord : rowRecordList) {
-            System.out.println(rowRecord);
-        }*/
+
+        List<RowRecord> rowRecordList = new ArrayList<>();
+
+        // 创建rowRecord
+        int i = 0;
+        for (Map<String, String> data : excelRowDataList) {
+            RowRecord rowRecord = handler.rowRecordCreate(data, i + 2);
+            rowRecordList.add(rowRecord);
+            i ++;
+        }
+
+        // convert并解析pojo
+        handler.handle(rowRecordList, Student.class);
 
         Assert.assertEquals(
                 "RowRecord{rowNo=2, result=RowRecordHandleResult{result=SUCCESS, msg='null'}, excelRecordMap={姓名=小明, 生日=1995-12-1, 年龄=23, 性别=男}, pojoRecordMap={class online.dinghuiye.core.resolution.torowrecord.testcase.Student=Student{name='小明', age=23, birthday=Fri Dec 01 00:00:00 CST 1995, sex=1, enable=1}}}",

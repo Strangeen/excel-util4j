@@ -5,17 +5,24 @@ import online.dinghuiye.core.annotation.convert.ValueMap;
 import online.dinghuiye.core.annotation.excel.SheetTitleName;
 import online.dinghuiye.core.annotation.excel.Transient;
 import online.dinghuiye.core.resolution.convert.testcase.CurrentTimeConvertor;
+import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.validator.constraints.NotBlank;
 
+import javax.persistence.*;
 import javax.validation.constraints.*;
 import java.util.Date;
 
 /**
  * Created by Strangeen on 2017/8/3.
  */
+@Entity
+@Table(name = "school_man")
+@DynamicInsert(true)
 public class SchoolMan {
 
     @Transient
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @SheetTitleName("姓名")
@@ -24,6 +31,7 @@ public class SchoolMan {
     private String name;
 
     @ValueConvert(CurrentTimeConvertor.class)
+    @Column(name = "create_time")
     private Date createTime;
 
     @SheetTitleName("人物简介")
@@ -48,6 +56,7 @@ public class SchoolMan {
 
     @SheetTitleName("班级")
     @Size(max = 25, message = "请最多填写{max}个字")
+    @Column(name = "class_name")
     private String className;
 
     @SheetTitleName("专业")
@@ -63,8 +72,11 @@ public class SchoolMan {
     @NotNull(message = "不能为空")
     @Min(value = 0, message = "填写不正确")
     @Max(value = 1, message = "填写不正确")
+    @Column(name = "cate_id")
     private Integer cateId;
 
+    public SchoolMan() {
+    }
 
     public SchoolMan(Integer id, String name, Date createTime, String description, Integer sex, String college, String grade, String className, String major, String phone, Integer cateId) {
         this.id = id;
