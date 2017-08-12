@@ -10,25 +10,24 @@ import java.lang.reflect.Field;
 import java.util.Map;
 
 /**
- * Created by Strangeen on 2017/7/1.
- * <p>
- * 空串或null转换为null
+ * {@link BlankToNull}注解实现类
+ *
+ * @author Strangeen
+ * on 2017/7/1
  */
 public class BlankToNullConvertor implements Convertor {
 
     private static final Logger logger = LoggerFactory.getLogger(BlankToNullConvertor.class);
 
     @Override
-    public Object convert(Object obj, Field field, Map<String, String> excelRecordMap) {
+    public Object convert(Object obj, Field field, Map<String, Object> excelRecordMap) {
 
-        logger.trace(new StringBuffer()
-                .append("field: ").append(field.getName())
-                .append(", obj: ").append(obj)
-                .append(" run BlankToNullConvertor").toString());
+        logger.trace("field: " + field.getName() +
+                        ", obj: " + obj +
+                        " run BlankToNullConvertor");
 
-        if (obj == null) return obj;
+        if (obj == null) return null;
         if (StringUtils.isBlank(obj.toString())) return null;
-        //return ConvertFactory.convertToType(field, obj);
         return obj;
     }
 }

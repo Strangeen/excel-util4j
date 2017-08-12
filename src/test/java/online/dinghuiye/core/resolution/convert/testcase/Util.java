@@ -17,7 +17,7 @@ public class Util {
             T2 o2 = list2.get(i);
             if (o1 == o2) continue; // null
             if (o1 != null && o1.equals(o2)) continue;
-            Object oc1 = convertor.change(o1);
+            Object oc1 = convertor != null ? convertor.change(o1) : o1;
             //Object oc2 = convertor.change(o2);
             if (oc1 == o2) continue; // null
             if (oc1 != null && oc1.equals(o2)) continue;

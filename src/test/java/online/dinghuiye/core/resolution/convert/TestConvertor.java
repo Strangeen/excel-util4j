@@ -1,10 +1,6 @@
 package online.dinghuiye.core.resolution.convert;
 
 import online.dinghuiye.api.resolution.convert.Convertor;
-import online.dinghuiye.core.annotation.convert.BlankToNull;
-import online.dinghuiye.core.annotation.convert.DateFormat;
-import online.dinghuiye.core.annotation.convert.ValueMap;
-import online.dinghuiye.core.consts.Consts;
 import online.dinghuiye.core.resolution.convert.testcase.ListValueConvertor;
 import online.dinghuiye.core.resolution.convert.testcase.User;
 import online.dinghuiye.core.resolution.convert.testcase.Util;
@@ -12,13 +8,11 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.SimpleTimeZone;
 
 /**
  * Created by Strangeen on 2017/7/2.

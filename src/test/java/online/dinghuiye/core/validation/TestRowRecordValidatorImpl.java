@@ -1,11 +1,9 @@
 package online.dinghuiye.core.validation;
 
-import online.dinghuiye.api.validation.RowRecordValidator;
 import online.dinghuiye.api.entity.ResultStatus;
 import online.dinghuiye.api.entity.RowRecord;
 import online.dinghuiye.api.entity.RowRecordHandleResult;
-import online.dinghuiye.core.resolution.torowrecord.RowRecordHandlerSinglePojoImpl;
-import online.dinghuiye.core.resolution.torowrecord.testcase.Student;
+import online.dinghuiye.api.validation.RowRecordValidator;
 import online.dinghuiye.core.validation.testcase.SchoolMan;
 import org.junit.Assert;
 import org.junit.Before;
@@ -18,14 +16,15 @@ import java.util.*;
  */
 public class TestRowRecordValidatorImpl {
 
-    //private SchoolMan man;
     private List<RowRecord> rowRecordList;
+    private List<RowRecord> rowRecordListForSuccess;
     private RowRecordValidator validator = new RowRecordValidatorImpl();
 
     @Before
     public void initTestData() {
-        rowRecordList = new ArrayList<>();
 
+        // test error
+        rowRecordList = new ArrayList<>();
         {
             SchoolMan man = new SchoolMan(
                 null, null, new Date(), null, null,
@@ -34,6 +33,7 @@ public class TestRowRecordValidatorImpl {
 
             RowRecord rowRecord = new RowRecord();
             rowRecord.set(SchoolMan.class, man);
+            rowRecord.setResult(new RowRecordHandleResult(ResultStatus.SUCCESS, null));
             rowRecordList.add(rowRecord);
         }
 
@@ -45,6 +45,7 @@ public class TestRowRecordValidatorImpl {
 
             RowRecord rowRecord = new RowRecord();
             rowRecord.set(SchoolMan.class, man);
+            rowRecord.setResult(new RowRecordHandleResult(ResultStatus.SUCCESS, null));
             rowRecordList.add(rowRecord);
         }
 
@@ -66,17 +67,41 @@ public class TestRowRecordValidatorImpl {
 
             RowRecord rowRecord = new RowRecord();
             rowRecord.set(SchoolMan.class, man);
+            rowRecord.setResult(new RowRecordHandleResult(ResultStatus.SUCCESS, null));
             rowRecordList.add(rowRecord);
+        }
+
+
+        // test success
+        rowRecordListForSuccess = new ArrayList<>();
+        {
+            SchoolMan man = new SchoolMan(
+                    null, "测试教师", new Date(), "测试简介", 0,
+                    null, null, null, null, null, 0
+            );
+
+            RowRecord rowRecord = new RowRecord();
+            rowRecord.set(SchoolMan.class, man);
+            rowRecord.setResult(new RowRecordHandleResult(ResultStatus.SUCCESS, null));
+            rowRecordListForSuccess.add(rowRecord);
         }
 
     }
 
     @Test
-    public void testValid() {
+    public void testValidSuccess() {
 
-        validator.valid(rowRecordList);
+        boolean success = validator.valid(rowRecordListForSuccess);
+        Assert.assertEquals(true, success);
+    }
+
+    @Test
+    public void testValidError() {
+
+        boolean success = validator.valid(rowRecordList);
+
+        Assert.assertEquals(false, success);
         {
-
             Assert.assertEquals(
                     true,
                     setsEqual(
@@ -124,8 +149,12 @@ public class TestRowRecordValidatorImpl {
     private <T> Set<T> arrayToSet(T[] ts) {
 
         Collection<T> cs = Arrays.asList(ts);
-        Set<T> set = new HashSet<T>();
+        Set<T> set = new HashSet<>();
         set.addAll(cs);
         return set;
     }
+
+
+    // TODO 测试pojo数组正确性
+
 }

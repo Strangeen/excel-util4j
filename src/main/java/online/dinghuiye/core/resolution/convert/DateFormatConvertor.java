@@ -12,23 +12,24 @@ import java.util.Date;
 import java.util.Map;
 
 /**
- * Created by Strangeen on 2017/6/27.
+ * {@link DateFormat}注解实现类，根据注解配置的时间格式转换为对应的Date对象
  *
- * 根据注解配置的时间格式转换为对应的
+ * @author Strangeen
+ * on 2017/6/27
  */
 public class DateFormatConvertor implements Convertor {
 
     private static final Logger logger = LoggerFactory.getLogger(DateFormatConvertor.class);
 
     @Override
-    public Object convert(Object obj, Field field, Map<String, String> excelRecordMap) {
+    public Object convert(Object obj, Field field, Map<String, Object> excelRecordMap) {
 
-        logger.trace(new StringBuffer()
-                .append("field: ").append(field.getName())
-                .append(", obj: ").append(obj)
-                .append(" run DateFormatConvertor").toString());
+        logger.trace("field: " + field.getName() +
+                        ", obj: " + obj +
+                        " run DateFormatConvertor");
 
-        if (obj == null) return obj;
+        if (obj == null) return null;
+        if (obj instanceof Date) return obj;
         Date date;
         try {
             String dateFormat = field.getAnnotation(DateFormat.class).value();

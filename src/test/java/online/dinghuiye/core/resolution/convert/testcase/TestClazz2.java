@@ -1,7 +1,5 @@
 package online.dinghuiye.core.resolution.convert.testcase;
 
-import online.dinghuiye.core.resolution.convert.testcase.User;
-
 import java.util.List;
 import java.util.Map;
 import java.util.Set;

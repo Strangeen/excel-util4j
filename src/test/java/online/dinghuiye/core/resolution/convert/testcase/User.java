@@ -2,7 +2,6 @@ package online.dinghuiye.core.resolution.convert.testcase;
 
 import online.dinghuiye.core.annotation.convert.*;
 import online.dinghuiye.core.resolution.convert.BlankToNullConvertor;
-import org.omg.CORBA.Current;
 
 import java.util.Date;
 import java.util.List;
@@ -21,7 +20,6 @@ public class User {
     private String sex;
 
     @DateFormat(value = "yyyy-MM-dd HH:mm:ss")
-//    @DateFormat(value = "")
     private Date birthday;
 
     @ValueConvert(value = ScoreConvertor.class)

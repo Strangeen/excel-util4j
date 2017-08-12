@@ -4,7 +4,6 @@ import online.dinghuiye.api.resolution.convert.Convertor;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -14,7 +13,7 @@ import java.util.Map;
 public class ScoreConvertor implements Convertor {
 
     @Override
-    public Object convert(Object obj, Field field, Map<String, String> excelRecordMap) {
+    public Object convert(Object obj, Field field, Map<String, Object> excelRecordMap) {
         if (obj instanceof String) {
 
             String str = obj.toString();

@@ -11,19 +11,21 @@ import java.lang.reflect.Field;
 import java.util.Map;
 
 /**
- * Created by Strangeen on 2017/6/27.
+ * {@link ValueMap}注解实现类
+ *
+ * @author Strangeen
+ * on 2017/6/27
  */
 public class ValueMapConvertor implements Convertor {
 
     private static final Logger logger = LoggerFactory.getLogger(ValueMapConvertor.class);
 
     @Override
-    public Object convert(Object obj, Field field, Map<String, String> excelRecordMap) {
+    public Object convert(Object obj, Field field, Map<String, Object> excelRecordMap) {
 
-        logger.trace(new StringBuffer()
-                .append("field: ").append(field.getName())
-                .append(", obj: ").append(obj)
-                .append(" run ValueMapConvertor").toString());
+        logger.trace("field: " + field.getName() +
+                        ", obj: " + obj +
+                        " run ValueMapConvertor");
 
         String jsonStr = field.getAnnotation(ValueMap.class).value();
         if (StringUtils.isBlank(jsonStr))
@@ -41,7 +43,6 @@ public class ValueMapConvertor implements Convertor {
         if (obj != null) {
             obj = json.get(obj.toString());
         }
-        //return ConvertFactory.convertToType(field, obj);
         return obj;
     }
 }

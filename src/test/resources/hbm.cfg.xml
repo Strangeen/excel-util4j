@@ -7,14 +7,50 @@
 
     <session-factory>
 
+        <property name="hibernate.connection.provider_class">
+            com.alibaba.druid.support.hibernate.DruidConnectionProvider
+        </property>
+        <property name="driverClassName">com.mysql.jdbc.Driver</property>
+        <property name="url">
+            jdbc:mysql://localhost:3306/hibernate_test?autoReconnect=true&amp;useUnicode=true&amp;characterEncoding=utf-8&amp;zeroDateTimeBehavior=convertToNull&amp;useSSL=false
+        </property>
+        <property name="username">root</property>
+        <property name="password">root</property>
+
         <!-- Database connection settings -->
-        <property name="connection.driver_class">com.mysql.jdbc.Driver</property>
+        <!--<property name="connection.driver_class">com.mysql.jdbc.Driver</property>
         <property name="connection.url">jdbc:mysql://localhost:3306/hibernate_test</property>
         <property name="connection.username">root</property>
-        <property name="connection.password">root</property>
+        <property name="connection.password">root</property>-->
+
+        <!-- 配置初始化大小、最小、最大 -->
+        <property name="initialSize">1</property>
+        <property name="minIdle">1</property>
+        <property name="maxActive">20</property>
+
+        <!-- 配置获取连接等待超时的时间 -->
+        <property name="maxWait">60000</property>
+
+        <!-- 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒 -->
+        <property name="timeBetweenEvictionRunsMillis">60000</property>
+
+        <!-- 配置一个连接在池中最小生存的时间，单位是毫秒 -->
+        <property name="minEvictableIdleTimeMillis">300000</property>
+
+
+        <!-- 打开PSCache，并且指定每个连接上PSCache的大小 -->
+        <property name="poolPreparedStatements">true</property>
+        <property name="maxPoolPreparedStatementPerConnectionSize">20</property>
+
+        <!-- 配置监控统计拦截的filters，去掉后监控界面sql无法统计 -->
+        <property name="filters">stat</property>
+        <!-- JDBC connection pool (use the built-in) -->
+        <!--   <property name="connection.pool_size">5</property> -->
+
+
 
         <!-- JDBC connection pool (use the built-in) -->
-        <property name="connection.pool_size">1</property>
+        <!--<property name="connection.pool_size">1</property>-->
 
         <!-- SQL dialect -->
         <property name="dialect">org.hibernate.dialect.MySQL5Dialect</property>
@@ -32,6 +68,8 @@
         <!--<property name="hbm2ddl.auto">update</property>-->
 
         <mapping class="online.dinghuiye.core.validation.testcase.SchoolMan"/>
+        <mapping class="online.dinghuiye.core.validation.testcase.User"/>
+        <mapping class="online.dinghuiye.core.validation.testcase.UserExtraInfo"/>
 
     </session-factory>
 

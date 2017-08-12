@@ -1,5 +1,6 @@
 package online.dinghuiye.core.annotation.convert;
 
+import online.dinghuiye.api.annotation.convert.Convert;
 import online.dinghuiye.api.resolution.convert.Convertor;
 import online.dinghuiye.core.resolution.convert.ValueConvertConvertor;
 
@@ -9,7 +10,10 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Created by Strangeen on 2017/6/27.
+ * 自定义转换
+ *
+ * @author Strangeen
+ * on 2017/6/27
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
@@ -18,6 +22,7 @@ public @interface ValueConvert {
 
     /**
      * 按照数组顺序执行Convertor
+     *
      * @return Convertor数组
      */
     Class<? extends Convertor>[] value();

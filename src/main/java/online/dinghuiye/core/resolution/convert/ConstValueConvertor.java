@@ -9,23 +9,21 @@ import java.lang.reflect.Field;
 import java.util.Map;
 
 /**
- * Created by Strangeen on 2017/8/3.
+ * {@link ConstValueConvertor}注解实现类
+ * @author Strangeen
+ * on 2017/8/3
  */
 public class ConstValueConvertor implements Convertor {
 
     private static final Logger logger = LoggerFactory.getLogger(ConstValueConvertor.class);
 
     @Override
-    public Object convert(Object obj, Field field, Map<String, String> excelRecordMap) {
+    public Object convert(Object obj, Field field, Map<String, Object> excelRecordMap) {
 
-        logger.trace(new StringBuffer()
-                .append("field: ").append(field.getName())
-                .append(", obj: ").append(obj)
-                .append(" run ConstValueConvertor").toString());
+        logger.trace("field: " + field.getName() +
+                        ", obj: " + obj +
+                        " run ConstValueConvertor");
 
-        String constValue = field.getAnnotation(ConstValue.class).value();
-
-        //return ConvertFactory.convertToType(field, obj);
-        return constValue;
+        return field.getAnnotation(ConstValue.class).value();
     }
 }

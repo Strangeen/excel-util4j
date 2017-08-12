@@ -6,9 +6,11 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Created by Strangeen on 2017/6/27.
+ * <p>表头名称注解</p>
+ * <p>POJO属性对应的excel表头名称，不填写value表示表头名称为属性名</p>
  *
- * POJO属性对应的excel表头名称，不填写value表示表头名称为属性名
+ * @author Strangeen
+ * on 2017/6/27
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)

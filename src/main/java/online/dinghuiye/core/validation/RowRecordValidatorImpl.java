@@ -6,20 +6,16 @@ import online.dinghuiye.api.entity.RowRecord;
 import online.dinghuiye.api.entity.RowRecordHandleResult;
 import online.dinghuiye.core.resolution.torowrecord.RowRecordKit;
 
-import javax.validation.ConstraintViolation;
-import javax.validation.Validation;
-import javax.validation.Validator;
-import javax.validation.ValidatorFactory;
-import java.util.Iterator;
+import javax.validation.*;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 /**
- * Created by Strangeen on 2017/8/3.
+ * <p>hibernate validatior实现验证</p>
  *
- * 实现只考虑单表单pojo的插入操作，TODO 后期重新实现多表一对一关联插入
- * 如果pojo不是拆开的形式，那么可以做到多个pojo同时检测（hibernate validation特性）
+ * @author Strangeen
+ * on 2017/8/3
  */
 public class RowRecordValidatorImpl implements RowRecordValidator {
 
@@ -32,37 +28,39 @@ public class RowRecordValidatorImpl implements RowRecordValidator {
     }
 
     @Override
-    public void valid(List<RowRecord> rowRecordList) {
+    public boolean valid(List<RowRecord> rowRecordList) {
 
+        boolean allSuccess = true;
         for (RowRecord rowRecord : rowRecordList) {
-            valid(rowRecord);
+            if (!valid(rowRecord)) allSuccess = false;
         }
+        return allSuccess;
     }
 
 
     @Override
-    public void valid(RowRecord rowRecord) {
+    public boolean valid(RowRecord rowRecord) {
 
         // 解析成功的才进行验证
         if (rowRecord.getResult() != null &&
-                rowRecord.getResult().getResult() != ResultStatus.SUCCESS) return;
+                rowRecord.getResult().getResult() != ResultStatus.SUCCESS)
+            return false; // 解析不成功，不进行验证，标记为不成功
 
         Map<Class<?>, Object> pojoObjMap = rowRecord.getPojoRecordMap();
         for (Map.Entry<Class<?>, Object> pojoObjEntry : pojoObjMap.entrySet()) {
             Set<ConstraintViolation<Object>> validResSet = validator.validate(pojoObjEntry.getValue());
             if (validResSet.size() > 0) {
-                StringBuffer msg = new StringBuffer();
-                Iterator<ConstraintViolation<Object>> i = validResSet.iterator();
-                while (i.hasNext()) {
-                    ConstraintViolation<Object> cv = i.next();
+                StringBuilder msg = new StringBuilder();
+                for (ConstraintViolation<Object> cv : validResSet) {
                     msg.append(
                             RowRecordKit.getSheetTitleNameByFieldName(
-                                    pojoObjEntry.getKey(),
-                                    cv.getPropertyPath().iterator().next().getName()))
+                                    ValidateKit.getConstraintViolationField(pojoObjEntry.getKey(), cv))
+                    )
                             .append(cv.getMessage()).append(";");
                 }
-                rowRecord.setResult(new RowRecordHandleResult(ResultStatus.FAIL, msg.toString()));
+                rowRecord.getResult().setResult(ResultStatus.FAIL).setMsg(msg.toString());
             }
         }
+        return rowRecord.getResult().getResult() == ResultStatus.SUCCESS;
     }
 }
