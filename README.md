@@ -107,7 +107,7 @@ public class UserExtraInfo {
     // ...
 }
 ```
-- `@ValueMap`和`@DateFormat`注解参见下面文档[①数据转换](https://github.com/Strangeen/excel-util4j#①数据转换)
+- `@ValueMap`和`@DateFormat`注解参见下面文档[①数据转换](https://github.com/Strangeen/excel-util4j#数据转换)
 
 ### 2. 编写接入方法
 ```java
@@ -128,7 +128,7 @@ List<RowRecord> resultList = handler.importExcel(
                 User.class); // 传入POJO
 ```
 
-- `RowRecordHandlerImpl`为一对一关系解析，如果使用单pojo解析使用`RowRecordHandlerSinglePojoImpl`，具体参见[②装配](https://github.com/Strangeen/excel-util4j#②装配)
+- `RowRecordHandlerImpl`为一对一关系解析，如果使用单pojo解析使用`RowRecordHandlerSinglePojoImpl`，具体参见[②解析excel数据为pojo对象 - ②装配](https://github.com/Strangeen/excel-util4j#装配)
 
 - `RowRecordPersistencorHibernateImpl`为hibernate实现持久化，`factory`为`SessionFactory`
 
@@ -144,7 +144,7 @@ List<RowRecord> resultList = handler.importExcel(
 
 # UTIL执行流程
 
-#### ①读取excel -> ②解析excel数据为pojo对象 -> ③验证pojo对象 -> ④pojo对象修正 -> ⑤持久化
+#### ①[读取excel](https://github.com/Strangeen/excel-util4j#读取excel) -> ②[解析excel数据为pojo对象](https://github.com/Strangeen/excel-util4j#解析excel数据为pojo对象) -> ③[验证pojo对象](https://github.com/Strangeen/excel-util4j#验证pojo对象) -> ④[pojo对象修正](https://github.com/Strangeen/excel-util4j#pojo对象修正) -> ⑤[持久化](https://github.com/Strangeen/excel-util4j#持久化)
 
 ---
 
@@ -314,7 +314,7 @@ excelutil提供了5种注解用于数据转换，基本能够满足数据转换�
 
 验证分为两部分：
 
-1. hibernate validator验证
+1. #### hibernate validator验证
 
     利用hibernate validator实现验证pojo属性验证，具体文档请参见[hibernate validator](https://docs.jboss.org/hibernate/validator/5.4/reference/en-US/html_single/)
 
@@ -349,7 +349,7 @@ excelutil提供了5种注解用于数据转换，基本能够满足数据转换�
     private String phone;
     ```
 
-2. 自定义验证
+2. #### 自定义验证
 
   自定义验证用于属性间的关系验证，以及数据库验证，比如判重验证等（貌似validator的自定义验证无法实现，这里我并没有深究，并不能肯定无法实现，以后有时间再研究，所以就自己实现了一套验证机制，和上述的转换代码很类似）
 
