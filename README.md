@@ -124,7 +124,7 @@ ImportHandler handler = new ImportHandler(
 List<RowRecord> resultList = handler.importExcel(
                 ExcelFactory.newExcel(new File("D:/userinfo.xls")), // 创建AbstractExcel对象
                 0, // 读取sheet序号为0的sheet
-                (Observable o, Object arg) -> System.out.println("进度：" + arg), // 创建导入进度观察者
+                (Observable o, Object arg) -> System.out.println("进度：" + arg), // 创建导入进度观察者，arg为导入进度百分数（没有%）
                 User.class); // 传入POJO
 ```
 
@@ -138,7 +138,7 @@ List<RowRecord> resultList = handler.importExcel(
   2. `整体事务MULTIPLE`
     所有要导入的数据在整个导入过程中整体保持原子性，如果验证过程中有至少一条数据失败，整体均不进行下一步（存储），如果存储中有至少一条数据存储失败，整体均不会被存储
 
-- 每条数据的导入结果可以通过遍历`resultList`，对元素执行`getResult()`方法既可获取导入结果或错误信息
+- 每条数据的导入结果可以通过遍历`resultList`，对元素执行`getResult()`方法获得`RowRecordHandleResult`，通过`RowRecordHandleResult`的`getResult()`可获取导入结果，`getMsg()`可获得错误信息，如果成功，则`getMsg()`为`NULL`
 
 ---
 
