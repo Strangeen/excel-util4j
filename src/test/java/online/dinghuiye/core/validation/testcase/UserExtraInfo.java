@@ -1,11 +1,14 @@
 package online.dinghuiye.core.validation.testcase;
 
 import com.alibaba.fastjson.annotation.JSONField;
+import online.dinghuiye.api.annotation.validate.Validate;
 import online.dinghuiye.core.annotation.convert.BlankToNull;
 import online.dinghuiye.core.annotation.convert.DateFormat;
 import online.dinghuiye.core.annotation.convert.ValueMap;
 import online.dinghuiye.core.annotation.excel.SheetTitleName;
 import online.dinghuiye.core.annotation.excel.Transient;
+import online.dinghuiye.core.validation.CertCardUniqueValidator;
+import online.dinghuiye.core.validation.UsernameUniqueValidator;
 import org.hibernate.annotations.DynamicInsert;
 
 import javax.persistence.*;
@@ -49,6 +52,11 @@ public class UserExtraInfo {
     @Past(message = "必须早于当前时间")
     private Date birth;
 
+    @SheetTitleName("身份证")
+    @Validate(validator = CertCardUniqueValidator.class, message = "身份证重复")
+    @Column(name = "cert_card")
+    private String certCard;
+
     @OneToOne
     @JoinColumn(name = "user_id")
     private User user;
@@ -56,12 +64,13 @@ public class UserExtraInfo {
     public UserExtraInfo() {
     }
 
-    public UserExtraInfo(Integer id, User user, String name, Integer sex, Date birth) {
+    public UserExtraInfo(Integer id, User user, String name, Integer sex, Date birth, String certCard) {
         this.id = id;
         this.user = user;
         this.name = name;
         this.sex = sex;
         this.birth = birth;
+        this.certCard = certCard;
     }
 
     public Integer getId() {
@@ -112,13 +121,23 @@ public class UserExtraInfo {
         this.score = score;
     }
 
+    public String getCertCard() {
+        return certCard;
+    }
+
+    public void setCertCard(String certCard) {
+        this.certCard = certCard;
+    }
+
     @Override
     public String toString() {
         return "UserExtraInfo{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", sex=" + sex +
+                ", score=" + score +
                 ", birth=" + birth +
+                ", certCard='" + certCard + '\'' +
                 ", user is null: " + (user == null) +
                 '}';
     }

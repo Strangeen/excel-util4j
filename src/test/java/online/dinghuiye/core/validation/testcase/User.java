@@ -1,7 +1,9 @@
 package online.dinghuiye.core.validation.testcase;
 
+import online.dinghuiye.api.annotation.validate.Validate;
 import online.dinghuiye.core.annotation.excel.SheetTitleName;
 import online.dinghuiye.core.annotation.excel.Transient;
+import online.dinghuiye.core.validation.UsernameUniqueValidator;
 import org.hibernate.annotations.DynamicInsert;
 
 import javax.persistence.*;
@@ -26,10 +28,11 @@ public class User {
     @SheetTitleName("账号")
     @NotNull
     @Size(min = 6, max = 20, message = "请填写{min}~{max}个字")
+    @Validate(validator = UsernameUniqueValidator.class, message = "用户名已被注册")
     private String username;
 
     @SheetTitleName("密码")
-    @NotNull
+    @NotNull(message = "不能为空")
     @Size(min = 6, max = 20, message = "请填写{min}~{max}个字")
     private String password;
 

@@ -24,7 +24,7 @@ public class RowRecordKit {
      * @param field 属性Field
      * @return 属性对应的excel表头名称
      */
-    public static String getSheetTitleNameByFieldName(Field field) {
+    public static String getSheetTitleNameByField(Field field) {
         try {
             String sheetTitleName = field.getName();
             SheetTitleName sheetTitleNameAnno = field.getAnnotation(SheetTitleName.class);

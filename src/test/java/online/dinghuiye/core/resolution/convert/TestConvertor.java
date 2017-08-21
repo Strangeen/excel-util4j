@@ -30,7 +30,7 @@ public class TestConvertor {
         // @BlankToNull
         {
             field = User.class.getDeclaredField("name");
-            convertorList = ConvertFactory.getConvertors(field);
+            convertorList = ConvertorFactory.getConvertors(field);
             obj = "   ";
             for (Convertor c : convertorList)
                 obj = c.convert(obj, field, null);
@@ -40,7 +40,7 @@ public class TestConvertor {
         // @ValueMap
         {
             field = User.class.getDeclaredField("sex");
-            convertorList = ConvertFactory.getConvertors(field);
+            convertorList = ConvertorFactory.getConvertors(field);
             obj = 0;
             for (Convertor c : convertorList)
                 obj = c.convert(obj, field, null);
@@ -52,7 +52,7 @@ public class TestConvertor {
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
             field = User.class.getDeclaredField("birthday");
-            convertorList = ConvertFactory.getConvertors(field);
+            convertorList = ConvertorFactory.getConvertors(field);
             obj = "1988-08-21 10:10:10";
             Date date = sdf.parse(obj.toString());
             for (Convertor c : convertorList)
@@ -63,7 +63,7 @@ public class TestConvertor {
         // @ValueConver自定义Convertor
         {
             field = User.class.getDeclaredField("scoreList");
-            convertorList = ConvertFactory.getConvertors(field);
+            convertorList = ConvertorFactory.getConvertors(field);
             obj = "15,16,17,18";
             for (Convertor c : convertorList)
                 obj = c.convert(obj, field, null);
@@ -93,7 +93,7 @@ public class TestConvertor {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
         field = User.class.getDeclaredField("modifyTime");
-        convertorList = ConvertFactory.getConvertors(field);
+        convertorList = ConvertorFactory.getConvertors(field);
         obj = null;
         for (Convertor c : convertorList)
             obj = c.convert(obj, field, null);

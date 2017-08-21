@@ -19,7 +19,7 @@ public class ConvertKit {
     private static final Logger logger = LoggerFactory.getLogger(ConvertKit.class);
 
     public static Object convert(Object excelValue, Field field, Map<String, Object> excelRecordMap) {
-        List<Convertor> convertorList = ConvertFactory.getConvertors(field);
+        List<Convertor> convertorList = ConvertorFactory.getConvertors(field);
         Object value = excelValue;
         // 转换器转换
         for (Convertor convertor : convertorList) {
@@ -39,7 +39,7 @@ public class ConvertKit {
 
         logger.trace("field: " + field.getName() +
                         ", obj: " + obj +
-                        " run ConvertFactory.convertToType");
+                        " run ConvertorFactory.convertToType");
 
         Class<?> fieldTypeClass = field.getType();
 

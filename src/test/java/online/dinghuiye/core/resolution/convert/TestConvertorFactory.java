@@ -20,7 +20,7 @@ public class TestConvertorFactory {
     public void testGetConvertors() throws NoSuchFieldException {
 
         Field field = User.class.getDeclaredField("sex");
-        List<Convertor> convertorList = ConvertFactory.getConvertors(field);
+        List<Convertor> convertorList = ConvertorFactory.getConvertors(field);
 
         List<Class<?>> convertorClazzList = new ArrayList<>();
         convertorClazzList.add(ValueMapConvertor.class);

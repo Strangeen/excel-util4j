@@ -2,6 +2,7 @@ package online.dinghuiye.core.resolution.convert;
 
 import online.dinghuiye.api.annotation.convert.Convert;
 import online.dinghuiye.api.resolution.convert.Convertor;
+import online.dinghuiye.core.common.AnnotationFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -17,9 +18,9 @@ import java.util.Map;
  *
  * @author Strangeen on 2017/6/30.
  */
-class ConvertFactory {
+class ConvertorFactory {
 
-    private static final Logger logger = LoggerFactory.getLogger(ConvertFactory.class);
+    private static final Logger logger = LoggerFactory.getLogger(ConvertorFactory.class);
     private static Map<Class<? extends Convertor>, Convertor> convertorCache = new HashMap<>();
 
     /**
@@ -34,7 +35,7 @@ class ConvertFactory {
 
         try {
             List<Convertor> convertorList = new ArrayList<>();
-            Annotation[] annos = field.getAnnotations();
+            Annotation[] annos = AnnotationFactory.getAnnotations(field);
             for (Annotation anno : annos) {
                 Convert convertAnno = anno.annotationType().getAnnotation(Convert.class);
                 if (convertAnno == null) continue;
@@ -52,7 +53,7 @@ class ConvertFactory {
             return convertorList;
 
         } catch (Exception e) {
-            logger.error("获取转换器失败", e);
+            logger.warn("获取转换器失败", e);
             throw new RuntimeException(e);
         }
     }

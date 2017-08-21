@@ -4,6 +4,7 @@ import online.dinghuiye.api.entity.ResultStatus;
 import online.dinghuiye.api.entity.RowRecord;
 import online.dinghuiye.api.resolution.torowrecord.RowRecordHandler;
 import online.dinghuiye.core.annotation.excel.Transient;
+import online.dinghuiye.core.common.FieldFactory;
 import online.dinghuiye.core.resolution.convert.ConvertKit;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -90,7 +91,7 @@ public class RowRecordHandlerImpl implements RowRecordHandler {
             if (isRootClass)
                 rowRecord.set(pojo, mainPojoObj);
 
-            Field[] fields = pojo.getDeclaredFields();
+            Field[] fields = FieldFactory.getFields(pojo);
             for (Field field : fields) {
 
                 Transient transientAnno = field.getAnnotation(Transient.class);
@@ -109,7 +110,7 @@ public class RowRecordHandlerImpl implements RowRecordHandler {
                 }
 
                 // 获取属性对应的excel表头名称
-                sheetTitleName = RowRecordKit.getSheetTitleNameByFieldName(field);
+                sheetTitleName = RowRecordKit.getSheetTitleNameByField(field);
 
                 // 按照pojo属性转换
                 Object excelValue = rowRecord.get(sheetTitleName);

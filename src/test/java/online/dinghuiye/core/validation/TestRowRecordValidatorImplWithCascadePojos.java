@@ -30,7 +30,7 @@ public class TestRowRecordValidatorImplWithCascadePojos {
         {
             User user = new User(
                     null,
-                    "123456",
+                    "223456",
                     "888888",
                     null
                     );
@@ -39,7 +39,8 @@ public class TestRowRecordValidatorImplWithCascadePojos {
                     user,
                     "测试用户姓名",
                     0,
-                    new Date()
+                    new Date(),
+                    "666667"
                     );
             user.setInfo(info);
 
@@ -52,7 +53,7 @@ public class TestRowRecordValidatorImplWithCascadePojos {
         {
             User user = new User(
                     null,
-                    "123457",
+                    "223457",
                     "888888",
                     null
             );
@@ -61,7 +62,8 @@ public class TestRowRecordValidatorImplWithCascadePojos {
                     user,
                     "测试用户姓名2",
                     1,
-                    new Date()
+                    new Date(),
+                    "666668"
             );
             user.setInfo(info);
 
@@ -90,7 +92,8 @@ public class TestRowRecordValidatorImplWithCascadePojos {
                     user,
                     "测试用户姓名30000000000000000000000000000000000",
                     3,
-                    c.getTime()
+                    c.getTime(),
+                    "666666"
             );
             user.setInfo(info);
 
@@ -104,7 +107,7 @@ public class TestRowRecordValidatorImplWithCascadePojos {
             User user = new User(
                     null,
                     "123459",
-                    "888888",
+                    "888889",
                     null
             );
             UserExtraInfo info = new UserExtraInfo(
@@ -112,7 +115,33 @@ public class TestRowRecordValidatorImplWithCascadePojos {
                     user,
                     "测试用户姓名4",
                     1,
-                    new Date()
+                    new Date(),
+                    ""
+            );
+            user.setInfo(info);
+
+            RowRecord rowRecord = new RowRecord();
+            rowRecord.set(User.class, user);
+            rowRecord.setResult(new RowRecordHandleResult(ResultStatus.SUCCESS, null));
+            rowRecordList.add(rowRecord);
+        }
+
+        {
+            // success
+
+            User user = new User(
+                    null,
+                    "223459",
+                    "888889",
+                    null
+            );
+            UserExtraInfo info = new UserExtraInfo(
+                    null,
+                    user,
+                    "测试用户姓名3.5",
+                    1,
+                    new Date(),
+                    "888889"
             );
             user.setInfo(info);
 
@@ -134,7 +163,8 @@ public class TestRowRecordValidatorImplWithCascadePojos {
                     user,
                     null,
                     null,
-                    new Date()
+                    new Date(),
+                    "888889"
             );
             user.setInfo(info);
 
@@ -167,14 +197,19 @@ public class TestRowRecordValidatorImplWithCascadePojos {
     @Test
     public void testValidSuccessForCascadePojo() { // Multiple Pojo
 
+        ResetTestValue.reset();
+
         boolean success = validator.valid(rowRecordListForSuccess);
 
         Assert.assertTrue(success);
         Assert.assertNull(rowRecordListForSuccess.get(0).getResult().getMsg());
+        Assert.assertNull(rowRecordListForSuccess.get(1).getResult().getMsg());
     }
 
     @Test
     public void testValidErrorForCascadePojo() { // Multiple Pojo
+
+        ResetTestValue.reset();
 
         boolean success = validator.valid(rowRecordList);
 
@@ -186,21 +221,31 @@ public class TestRowRecordValidatorImplWithCascadePojos {
                 setsEqual(
                         arrayToSet(new String[]{
                                 "账号请填写6~20个字","生日必须早于当前时间",
-                                "密码请填写6~20个字","性别填写不正确","姓名请填写1~20个字"}),
+                                "密码请填写6~20个字","性别填写不正确","姓名请填写1~20个字",
+                                "身份证身份证重复"}),
                         arrayToSet(rowRecordList.get(0).getResult().getMsg().split(";"))
                 )
         );
 
-        Assert.assertEquals(ResultStatus.SUCCESS, rowRecordList.get(1).getResult().getResult());
-        Assert.assertNull(rowRecordList.get(1).getResult().getMsg());
-
-        Assert.assertEquals(ResultStatus.FAIL, rowRecordList.get(2).getResult().getResult());
+        Assert.assertEquals(ResultStatus.FAIL, rowRecordList.get(1).getResult().getResult());
         Assert.assertEquals(
                 true,
                 setsEqual(
                         arrayToSet(new String[]{
-                                "账号请填写6~20个字","密码请填写6~20个字"}),
-                        arrayToSet(rowRecordList.get(2).getResult().getMsg().split(";"))
+                                "账号用户名已被注册"}),
+                        arrayToSet(rowRecordList.get(1).getResult().getMsg().split(";"))
+                )
+        );
+
+        Assert.assertEquals(ResultStatus.SUCCESS, rowRecordList.get(2).getResult().getResult());
+
+        Assert.assertEquals(ResultStatus.FAIL, rowRecordList.get(3).getResult().getResult());
+        Assert.assertEquals(
+                true,
+                setsEqual(
+                        arrayToSet(new String[]{
+                                "账号请填写6~20个字","密码请填写6~20个字","身份证身份证重复"}),
+                        arrayToSet(rowRecordList.get(3).getResult().getMsg().split(";"))
                 )
         );
     }

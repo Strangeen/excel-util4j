@@ -40,7 +40,7 @@ public class TestRowRecordValidatorImpl {
         {
             SchoolMan man = new SchoolMan(
                     null, "测试教师", new Date(), "测试简介", 3,
-                    null, null, null, null, null, 3
+                    null, null, null, null, "aaa", 3
             );
 
             RowRecord rowRecord = new RowRecord();
@@ -61,7 +61,7 @@ public class TestRowRecordValidatorImpl {
                     null,
                     "123456789012345678901234567890",
                     "123456789012345678901234567890123456789012345678901",
-                    "aaa",
+                    "12345678901",
                     1
             );
 
@@ -77,7 +77,7 @@ public class TestRowRecordValidatorImpl {
         {
             SchoolMan man = new SchoolMan(
                     null, "测试教师", new Date(), "测试简介", 0,
-                    null, null, null, null, null, 0
+                    null, null, null, null, "22345678901", 0
             );
 
             RowRecord rowRecord = new RowRecord();
@@ -91,6 +91,8 @@ public class TestRowRecordValidatorImpl {
     @Test
     public void testValidSuccess() {
 
+        ResetTestValue.reset();
+
         boolean success = validator.valid(rowRecordListForSuccess);
         Assert.assertEquals(true, success);
     }
@@ -98,7 +100,11 @@ public class TestRowRecordValidatorImpl {
     @Test
     public void testValidError() {
 
+        ResetTestValue.reset();
+
         boolean success = validator.valid(rowRecordList);
+
+        System.out.println(rowRecordList);
 
         Assert.assertEquals(false, success);
         {
@@ -117,7 +123,7 @@ public class TestRowRecordValidatorImpl {
                     true,
                     setsEqual(
                             arrayToSet(new String[]{
-                                    "类别填写不正确","性别填写不正确"}),
+                                    "类别填写不正确","性别填写不正确","电话填写不正确"}),
                             arrayToSet(rowRecordList.get(1).getResult().getMsg().split(";"))
                     )
             );
@@ -128,7 +134,7 @@ public class TestRowRecordValidatorImpl {
                     true,
                     setsEqual(
                             arrayToSet(new String[]{
-                                    "电话填写不正确","班级请最多填写25个字",
+                                    "电话已被注册","班级请最多填写25个字",
                                     "专业请最多填写50个字","学院请最多填写50个字",
                                     "人物简介请最多填写100个字","姓名请最多填写11个字"}),
                             arrayToSet(rowRecordList.get(2).getResult().getMsg().split(";"))
@@ -153,8 +159,4 @@ public class TestRowRecordValidatorImpl {
         set.addAll(cs);
         return set;
     }
-
-
-    // TODO 测试pojo数组正确性
-
 }

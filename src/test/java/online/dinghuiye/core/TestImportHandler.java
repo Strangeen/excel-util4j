@@ -4,6 +4,7 @@ import online.dinghuiye.api.entity.RowRecord;
 import online.dinghuiye.api.entity.TransactionMode;
 import online.dinghuiye.core.persistence.RowRecordPersistencorHibernateImpl;
 import online.dinghuiye.core.resolution.torowrecord.RowRecordHandlerImpl;
+import online.dinghuiye.core.validation.ResetTestValue;
 import online.dinghuiye.core.validation.testcase.SchoolMan;
 import online.dinghuiye.excel.ExcelFactory;
 import org.hibernate.SessionFactory;
@@ -40,6 +41,8 @@ public class TestImportHandler {
     @Test
     public void testImportExcelSingletonSuccess() {
 
+        ResetTestValue.reset();
+
         ImportHandler handler = new ImportHandler(
                 new RowRecordHandlerImpl(),
                 new RowRecordPersistencorHibernateImpl(factory), TransactionMode.SINGLETON);
@@ -60,6 +63,8 @@ public class TestImportHandler {
     // 可以保存一条
     @Test
     public void testImportExcelSingletonError() {
+
+        ResetTestValue.reset();
 
         ImportHandler handler = new ImportHandler(
                 new RowRecordPersistencorHibernateImpl(factory), TransactionMode.SINGLETON);
@@ -82,6 +87,8 @@ public class TestImportHandler {
     @Test
     public void testImportExcelMultipleSuccess() {
 
+        ResetTestValue.reset();
+
         ImportHandler handler = new ImportHandler(
                 new RowRecordPersistencorHibernateImpl(factory), TransactionMode.MULTIPLE);
         List<RowRecord> list = handler.importExcel(
@@ -101,6 +108,8 @@ public class TestImportHandler {
     // 均不能保存
     @Test
     public void testImportExcelMultipleError() {
+
+        ResetTestValue.reset();
 
         ImportHandler handler = new ImportHandler(
                 new RowRecordPersistencorHibernateImpl(factory), TransactionMode.MULTIPLE);

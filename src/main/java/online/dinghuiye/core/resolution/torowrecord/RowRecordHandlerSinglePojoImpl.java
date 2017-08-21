@@ -2,9 +2,9 @@ package online.dinghuiye.core.resolution.torowrecord;
 
 import online.dinghuiye.api.entity.ResultStatus;
 import online.dinghuiye.api.entity.RowRecord;
-import online.dinghuiye.api.entity.RowRecordHandleResult;
 import online.dinghuiye.api.resolution.torowrecord.RowRecordHandler;
 import online.dinghuiye.core.annotation.excel.Transient;
+import online.dinghuiye.core.common.FieldFactory;
 import online.dinghuiye.core.resolution.convert.ConvertKit;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -78,14 +78,14 @@ public class RowRecordHandlerSinglePojoImpl implements RowRecordHandler {
             Object pojoObj = pojo.newInstance();
             rowRecord.set(pojo, pojoObj);
 
-            Field[] fields = pojo.getDeclaredFields();
+            Field[] fields = FieldFactory.getFields(pojo);
             for (Field field : fields) {
 
                 Transient transientAnno = field.getAnnotation(Transient.class);
                 if (transientAnno != null) continue;
 
                 // 获取属性对应的excel表头名称
-                String sheetTitleName = RowRecordKit.getSheetTitleNameByFieldName(field);
+                String sheetTitleName = RowRecordKit.getSheetTitleNameByField(field);
 
                 // 按照pojo属性转换
                 Object excelValue = rowRecord.get(sheetTitleName);

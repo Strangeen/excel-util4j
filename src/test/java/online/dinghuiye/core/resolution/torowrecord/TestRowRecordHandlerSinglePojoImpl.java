@@ -1,6 +1,7 @@
 package online.dinghuiye.core.resolution.torowrecord;
 
 import online.dinghuiye.api.entity.RowRecord;
+import online.dinghuiye.core.resolution.torowrecord.testcase.Score;
 import online.dinghuiye.core.resolution.torowrecord.testcase.Student;
 import org.junit.Assert;
 import org.junit.Before;
@@ -32,6 +33,8 @@ public class TestRowRecordHandlerSinglePojoImpl {
             excelRowDataMap.put("年龄", "23");
             excelRowDataMap.put("性别", "男");
             excelRowDataMap.put("生日", "1995-12-1");
+            excelRowDataMap.put("学科", "语文");
+            excelRowDataMap.put("分数", "99");
         }
         {
             Map<String, Object> excelRowDataMap = new HashMap<>();
@@ -80,7 +83,7 @@ public class TestRowRecordHandlerSinglePojoImpl {
 
         Assert.assertEquals(true, success);
         Assert.assertEquals(
-                "RowRecord{rowNo=2, result=RowRecordHandleResult{result=SUCCESS, msg='null'}, excelRecordMap={姓名=小明, 生日=1995-12-1, 年龄=23, 性别=男}, pojoRecordMap={class online.dinghuiye.core.resolution.torowrecord.testcase.Student=Student{name='小明', age=23, birthday=Fri Dec 01 00:00:00 CST 1995, sex=1, enable=1}}}",
+                "RowRecord{rowNo=2, result=RowRecordHandleResult{result=SUCCESS, msg='null'}, excelRecordMap={学科=语文, 分数=99, 姓名=小明, 生日=1995-12-1, 年龄=23, 性别=男}, pojoRecordMap={class online.dinghuiye.core.resolution.torowrecord.testcase.Student=Student{name='小明', age=23, birthday=Fri Dec 01 00:00:00 CST 1995, sex=1, enable=1}}}",
                 rowRecordList.get(0).toString()
         );
         Assert.assertEquals(
@@ -112,6 +115,30 @@ public class TestRowRecordHandlerSinglePojoImpl {
                 rowRecordList.toString());
     }
 
-    // TODO 测试pojo数组正确性
+    @Test
+    public void testHandleMultiPojo() {
+        RowRecordHandlerSinglePojoImpl handler = new RowRecordHandlerSinglePojoImpl();
 
+        List<RowRecord> rowRecordList = new ArrayList<>();
+
+        // 创建rowRecord
+        int i = 0;
+        for (Map<String, Object> data : excelRowDataList) {
+            RowRecord rowRecord = handler.rowRecordCreate(data, i + 2);
+            rowRecordList.add(rowRecord);
+            i ++;
+        }
+
+        // convert并解析pojo
+        boolean success = handler.handle(rowRecordList, Student.class, Score.class);
+
+        Assert.assertEquals(true, success);
+
+        Assert.assertEquals("{class online.dinghuiye.core.resolution.torowrecord.testcase.Student=Student{name='小明', age=23, birthday=Fri Dec 01 00:00:00 CST 1995, sex=1, enable=1}, class online.dinghuiye.core.resolution.torowrecord.testcase.Score=Score{scoreName='语文', score=99}}",
+                rowRecordList.get(0).getPojoRecordMap().toString());
+
+        Assert.assertEquals("{class online.dinghuiye.core.resolution.torowrecord.testcase.Student=Student{name='小花', age=20, birthday=Sun Jun 01 00:00:00 CST 1997, sex=0, enable=1}, class online.dinghuiye.core.resolution.torowrecord.testcase.Score=Score{scoreName='null', score=null}}",
+                rowRecordList.get(1).getPojoRecordMap().toString());
+
+    }
 }

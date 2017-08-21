@@ -5,6 +5,7 @@ import online.dinghuiye.api.entity.RowRecord;
 import online.dinghuiye.api.entity.TransactionMode;
 import online.dinghuiye.core.persistence.RowRecordPersistencorHibernateImpl;
 import online.dinghuiye.core.resolution.torowrecord.RowRecordHandlerImpl;
+import online.dinghuiye.core.validation.ResetTestValue;
 import online.dinghuiye.core.validation.testcase.SchoolMan;
 import online.dinghuiye.core.validation.testcase.User;
 import online.dinghuiye.excel.ExcelFactory;
@@ -57,6 +58,9 @@ public class TestImportHandlerForCascadePojo {
     }
 
     private void testSuccess(TransactionMode mode) {
+
+        ResetTestValue.reset();
+
         ImportHandler handler = new ImportHandler(
                 new RowRecordHandlerImpl(),
                 new RowRecordPersistencorHibernateImpl(factory), mode);
@@ -148,6 +152,8 @@ public class TestImportHandlerForCascadePojo {
     }
 
     private void testError(TransactionMode mode, Function<List<RowRecord>, Object> function) {
+
+        ResetTestValue.reset();
 
         ImportHandler handler = new ImportHandler(
                 new RowRecordHandlerImpl(),

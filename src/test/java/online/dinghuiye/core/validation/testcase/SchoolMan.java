@@ -1,10 +1,12 @@
 package online.dinghuiye.core.validation.testcase;
 
+import online.dinghuiye.api.annotation.validate.Validate;
 import online.dinghuiye.core.annotation.convert.ValueConvert;
 import online.dinghuiye.core.annotation.convert.ValueMap;
 import online.dinghuiye.core.annotation.excel.SheetTitleName;
 import online.dinghuiye.core.annotation.excel.Transient;
 import online.dinghuiye.core.resolution.convert.testcase.CurrentTimeConvertor;
+import online.dinghuiye.core.validation.PhoneUniqueValidator;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.validator.constraints.NotBlank;
 
@@ -65,6 +67,7 @@ public class SchoolMan {
 
     @SheetTitleName("电话")
     @Pattern(regexp = "(^(\\+|0)[0-9]{2}[0-9]{11}$)|(^[0-9]{11}$)", message = "填写不正确")
+    @Validate(validator = PhoneUniqueValidator.class, message = "已被注册")
     private String phone;
 
     @SheetTitleName("类别")
