@@ -6,6 +6,8 @@
 
 2. 默认只采用hibernate进行持久化，毕竟这种导入形式使用hibernate再适合不过了，如需要使用其他持久化方式，需要自行实现接口编写持久化代码
 
+为了方便后期使用，特意出了一份使用示例，详见：[Java导入Excel到数据库工具——EXCEL-UTIL4J使用示例](http://www.jianshu.com/p/e9f49acc6367)
+
 # 先行配置包
 
 1. [poikit](https://github.com/Strangeen/poi-kit)
