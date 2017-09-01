@@ -10,6 +10,7 @@ import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
+import javax.validation.groups.Default;
 import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Map;
@@ -61,7 +62,10 @@ public class RowRecordValidatorImpl implements RowRecordValidator {
         for (Map.Entry<Class<?>, Object> pojoObjEntry : pojoObjMap.entrySet()) {
 
             // hibernate validator验证
-            Set<ConstraintViolation<Object>> validResSet = validator.validate(pojoObjEntry.getValue());
+            Set<ConstraintViolation<Object>> validResSet =
+                    validator.validate(pojoObjEntry.getValue(),
+                            // 限定groups，避免repaire了POJO对象后，hibernate存储前检查可能失败而报错的情况
+                            online.dinghuiye.api.validation.Validator.class, Default.class);
             if (validResSet.size() > 0) {
                 StringBuilder msg = new StringBuilder();
                 for (ConstraintViolation<Object> cv : validResSet) {
