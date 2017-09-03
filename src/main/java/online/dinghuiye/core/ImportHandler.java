@@ -166,8 +166,11 @@ public class ImportHandler {
         int step = 3;
         if (repairer != null)
             step = 4;
-        Process process = new Process((long) (rowRecordList.size() * step));
-        process.addObserver(processObserver);
+        Process process = null;
+        if (processObserver != null) {
+            process = new Process((long) (rowRecordList.size() * step));
+            process.addObserver(processObserver);
+        }
 
         // 步骤1
         if (!handler.handle(rowRecordList, process, pojos) && mode == TransactionMode.MULTIPLE)
@@ -183,10 +186,11 @@ public class ImportHandler {
     }
 
     private void repaire(List<RowRecord> rowRecordList, Process process) {
-        process.setNode(ProcessNode.REPAIRATION);
+        if (process != null)
+            process.setNode(ProcessNode.REPAIRATION);
         repairer.repaire(rowRecordList, process);
         // 如果用户没有在步骤3操作process 或 操作进度有误，则需要对process进行修正
-        if (process.getExcuted() != rowRecordList.size() * 3)
+        if (process != null && process.getExcuted() != rowRecordList.size() * 3)
             process.setExcuted((long) (rowRecordList.size() * 3));
     }
 }
