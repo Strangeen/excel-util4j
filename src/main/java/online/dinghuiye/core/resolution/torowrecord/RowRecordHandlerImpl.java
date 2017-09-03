@@ -2,7 +2,6 @@ package online.dinghuiye.core.resolution.torowrecord;
 
 import online.dinghuiye.api.entity.ResultStatus;
 import online.dinghuiye.api.entity.RowRecord;
-import online.dinghuiye.api.resolution.torowrecord.RowRecordHandler;
 import online.dinghuiye.core.annotation.excel.Transient;
 import online.dinghuiye.core.common.FieldFactory;
 import online.dinghuiye.core.resolution.convert.ConvertKit;
@@ -11,7 +10,6 @@ import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.Field;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -22,33 +20,14 @@ import java.util.Map;
  *
  * <p>需要注意：pojos无法解析引用类为集合或数组的情况，即只能解析一对一关系的数据</p>
  *
- * @author Strangeen
- * on 2017/08/09
+ * @author Strangeen on 2017/08/09
+ *
+ * @author Strangeen on 2017/9/3
+ * @version 2.1.0
  */
-public class RowRecordHandlerImpl implements RowRecordHandler {
+public class RowRecordHandlerImpl extends AbstractRowRecordHandler {
 
     private static final Logger logger = LoggerFactory.getLogger(RowRecordHandlerSinglePojoImpl.class);
-
-    @Override
-    public boolean handle(List<RowRecord> rowRecordList, Class<?>... pojos) {
-
-        boolean allSuccess = true;
-        for (RowRecord rowRecord : rowRecordList) {
-            if (!handle(rowRecord, pojos)) allSuccess = false;
-        }
-        return allSuccess;
-    }
-
-    @Override
-    public boolean handle(RowRecord rowRecord, Class<?>[] pojos) {
-        return pojoHandle(rowRecord, pojos);
-    }
-
-
-    @Override
-    public RowRecord rowRecordCreate(Map<String, Object> excelRowData, Integer row) {
-        return RowRecordKit.createRowRecord(excelRowData, row);
-    }
 
     /**
      * 装载pojo数组对象
@@ -58,7 +37,8 @@ public class RowRecordHandlerImpl implements RowRecordHandler {
      * @return true - RowRecord解析成功{@link ResultStatus#SUCCESS}
      *         false - RowRecord解析失败{@link ResultStatus}
      */
-    private boolean pojoHandle(RowRecord rowRecord, Class<?>... pojos) {
+    @Override
+    protected boolean pojoHandle(RowRecord rowRecord, Class<?>... pojos) {
 
         if (pojos.length <= 0) throw new RuntimeException("pojos未定义");
         boolean allSuccess = true;

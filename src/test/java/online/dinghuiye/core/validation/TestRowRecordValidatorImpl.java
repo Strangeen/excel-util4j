@@ -1,5 +1,6 @@
 package online.dinghuiye.core.validation;
 
+import online.dinghuiye.api.entity.Process;
 import online.dinghuiye.api.entity.ResultStatus;
 import online.dinghuiye.api.entity.RowRecord;
 import online.dinghuiye.api.entity.RowRecordHandleResult;
@@ -12,7 +13,9 @@ import org.junit.Test;
 import java.util.*;
 
 /**
- * Created by Strangeen on 2017/8/4.
+ * Created by Strangeen on 2017/8/4
+ *
+ * @version 2.1.0 on 2017/9/3
  */
 public class TestRowRecordValidatorImpl {
 
@@ -93,8 +96,10 @@ public class TestRowRecordValidatorImpl {
 
         ResetTestValue.reset();
 
-        boolean success = validator.valid(rowRecordListForSuccess);
+        Process process = new Process((long) rowRecordListForSuccess.size());
+        boolean success = validator.valid(rowRecordListForSuccess, process);
         Assert.assertEquals(true, success);
+        Assert.assertEquals(new Double(100.0), process.getProcess());
     }
 
     @Test
@@ -102,7 +107,7 @@ public class TestRowRecordValidatorImpl {
 
         ResetTestValue.reset();
 
-        boolean success = validator.valid(rowRecordList);
+        boolean success = validator.valid(rowRecordList, null);
 
         System.out.println(rowRecordList);
 

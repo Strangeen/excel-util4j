@@ -1,6 +1,6 @@
 package online.dinghuiye.core.resolution.convert;
 
-import online.dinghuiye.api.resolution.convert.Convertor;
+import online.dinghuiye.api.resolution.Convertor;
 import online.dinghuiye.core.annotation.convert.ConstValue;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,8 +10,11 @@ import java.util.Map;
 
 /**
  * {@link ConstValueConvertor}注解实现类
- * @author Strangeen
- * on 2017/8/3
+ *
+ * @author Strangeen on 2017/8/3
+ *
+ * @author Strangeen on 2017/9/3
+ * @version 2.1.0
  */
 public class ConstValueConvertor implements Convertor {
 

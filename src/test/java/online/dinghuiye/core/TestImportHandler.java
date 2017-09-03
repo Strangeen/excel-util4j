@@ -1,5 +1,6 @@
 package online.dinghuiye.core;
 
+import online.dinghuiye.api.entity.Process;
 import online.dinghuiye.api.entity.RowRecord;
 import online.dinghuiye.api.entity.TransactionMode;
 import online.dinghuiye.core.persistence.RowRecordPersistencorHibernateImpl;
@@ -20,7 +21,10 @@ import java.util.Observable;
 import java.util.Observer;
 
 /**
- * Created by Strangeen on 2017/8/7.
+ * Created by Strangeen on 2017/8/7
+ *
+ * @author Strangeen on 2017/9/3
+ * @version 2.1.0
  */
 public class TestImportHandler {
 
@@ -51,7 +55,8 @@ public class TestImportHandler {
                 new Observer() {
                     @Override
                     public void update(Observable o, Object arg) {
-                        System.out.println("进度：" + arg);
+                        Process process = (Process) arg;
+                        System.out.println("进度：" + process.getProcess() + "，当前阶段：" + process.getNode());
                     }
                 },
                 SchoolMan.class);
@@ -73,7 +78,8 @@ public class TestImportHandler {
                 new Observer() {
                     @Override
                     public void update(Observable o, Object arg) {
-                        System.out.println("进度：" + arg);
+                        Process process = (Process) arg;
+                        System.out.println("进度：" + process.getProcess() + "，当前阶段：" + process.getNode());
                     }
                 },
                 SchoolMan.class);
@@ -96,7 +102,8 @@ public class TestImportHandler {
                 new Observer() {
                     @Override
                     public void update(Observable o, Object arg) {
-                        System.out.println("进度：" + arg);
+                        Process process = (Process) arg;
+                        System.out.println("进度：" + process.getProcess() + "，当前阶段：" + process.getNode());
                     }
                 },
                 SchoolMan.class);
@@ -118,7 +125,8 @@ public class TestImportHandler {
                 new Observer() {
                     @Override
                     public void update(Observable o, Object arg) {
-                        System.out.println("进度：" + arg);
+                        Process process = (Process) arg;
+                        System.out.println("进度：" + process.getProcess() + "，当前阶段：" + process.getNode());
                     }
                 },
                 SchoolMan.class);

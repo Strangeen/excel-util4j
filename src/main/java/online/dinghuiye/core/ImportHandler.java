@@ -1,11 +1,13 @@
 package online.dinghuiye.core;
 
 import online.dinghuiye.api.AbstractExcel;
+import online.dinghuiye.api.entity.Process;
+import online.dinghuiye.api.entity.ProcessNode;
 import online.dinghuiye.api.entity.RowRecord;
 import online.dinghuiye.api.entity.TransactionMode;
 import online.dinghuiye.api.persistence.RowRecordPerPersistentRepairer;
 import online.dinghuiye.api.persistence.RowRecordPersistencor;
-import online.dinghuiye.api.resolution.torowrecord.RowRecordHandler;
+import online.dinghuiye.api.resolution.RowRecordHandler;
 import online.dinghuiye.api.validation.RowRecordValidator;
 import online.dinghuiye.core.resolution.torowrecord.RowRecordHandlerSinglePojoImpl;
 import online.dinghuiye.core.validation.RowRecordValidatorImpl;
@@ -18,8 +20,10 @@ import java.util.Observer;
 /**
  * <p>excel导入入口类</p>
  *
- * @author Strangeen
- * on 2017/8/6
+ * @author Strangeen on 2017/8/6
+ *
+ * @author Strangeen on 2017/9/3
+ * @version 2.1.0
  */
 public class ImportHandler {
 
@@ -29,24 +33,45 @@ public class ImportHandler {
     private TransactionMode mode;
     private RowRecordPerPersistentRepairer repairer;
 
-    public void setHandler(RowRecordHandler handler) { this.handler = handler; }
+    public RowRecordHandler getHandler() {
+        return handler;
+    }
+
+    public void setHandler(RowRecordHandler handler) {
+        this.handler = handler;
+    }
+
+    public RowRecordValidator getValidator() {
+        return validator;
+    }
 
     public void setValidator(RowRecordValidator validator) {
         this.validator = validator;
+    }
+
+    public RowRecordPersistencor getPersistencor() {
+        return persistencor;
     }
 
     public void setPersistencor(RowRecordPersistencor persistencor) {
         this.persistencor = persistencor;
     }
 
+    public TransactionMode getMode() {
+        return mode;
+    }
+
     public void setMode(TransactionMode mode) {
         this.mode = mode;
+    }
+
+    public RowRecordPerPersistentRepairer getRepairer() {
+        return repairer;
     }
 
     public void setRepairer(RowRecordPerPersistentRepairer repairer) {
         this.repairer = repairer;
     }
-
 
     public ImportHandler() {}
 
@@ -137,12 +162,31 @@ public class ImportHandler {
             rowRecordList.add(handler.rowRecordCreate(excelData, i + 2));
         }
 
-        if (!handler.handle(rowRecordList, pojos) && mode == TransactionMode.MULTIPLE)
+        // 根据repairer判断有3或4个步骤，进度为处理数量*3或4
+        int step = 3;
+        if (repairer != null)
+            step = 4;
+        Process process = new Process((long) (rowRecordList.size() * step));
+        process.addObserver(processObserver);
+
+        // 步骤1
+        if (!handler.handle(rowRecordList, process, pojos) && mode == TransactionMode.MULTIPLE)
             return rowRecordList;
-        if (!validator.valid(rowRecordList) && mode == TransactionMode.MULTIPLE)
+        // 步骤2
+        if (!validator.valid(rowRecordList, process) && mode == TransactionMode.MULTIPLE)
             return rowRecordList;
-        if (repairer != null) repairer.repaire(rowRecordList); // 持久化前修正rowRecord，如：密码md5加密转换
-        persistencor.persist(rowRecordList, mode, processObserver);
+        // 步骤3 持久化前修正rowRecord，如：密码md5加密转换
+        if (repairer != null) repaire(rowRecordList, process);
+        // 步骤4
+        persistencor.persist(rowRecordList, mode, process);
         return rowRecordList;
+    }
+
+    private void repaire(List<RowRecord> rowRecordList, Process process) {
+        process.setNode(ProcessNode.REPAIRATION);
+        repairer.repaire(rowRecordList, process);
+        // 如果用户没有在步骤3操作process 或 操作进度有误，则需要对process进行修正
+        if (process.getExcuted() != rowRecordList.size() * 3)
+            process.setExcuted((long) (rowRecordList.size() * 3));
     }
 }

@@ -1,7 +1,7 @@
 package online.dinghuiye.core.resolution.convert;
 
 import com.alibaba.fastjson.JSONObject;
-import online.dinghuiye.api.resolution.convert.Convertor;
+import online.dinghuiye.api.resolution.Convertor;
 import online.dinghuiye.core.annotation.convert.ValueMap;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -13,8 +13,10 @@ import java.util.Map;
 /**
  * {@link ValueMap}注解实现类
  *
- * @author Strangeen
- * on 2017/6/27
+ * @author Strangeen on 2017/6/27
+ *
+ * @author Strangeen on 2017/9/3
+ * @version 2.1.0
  */
 public class ValueMapConvertor implements Convertor {
 

@@ -2,6 +2,7 @@ package online.dinghuiye.core.resolution.torowrecord;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import online.dinghuiye.api.entity.Process;
 import online.dinghuiye.api.entity.ResultStatus;
 import online.dinghuiye.api.entity.RowRecord;
 import online.dinghuiye.core.resolution.torowrecord.testcase.User;
@@ -17,8 +18,9 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * @author Strangeen
- * on 2017/08/09
+ * @author Strangeen on 2017/08/09
+ *
+ * @version 2.1.0 on 2017/9/3
  */
 public class TestRowRecordHandlerImpl {
 
@@ -86,8 +88,10 @@ public class TestRowRecordHandlerImpl {
         }
 
         // convert并解析pojo
-        boolean success = handler.handle(rowRecordList, User.class);
+        Process process = new Process((long) rowRecordList.size());
+        boolean success = handler.handle(rowRecordList, process, User.class);
 
+        Assert.assertEquals(new Double(100.0), process.getProcess());
         Assert.assertTrue(success);
 
         {
@@ -136,7 +140,7 @@ public class TestRowRecordHandlerImpl {
             i ++;
         }
         // convert并解析pojo
-        boolean success = handler.handle(rowRecordList, User.class);
+        boolean success = handler.handle(rowRecordList, null, User.class);
 
         System.out.println(rowRecordList);
         Assert.assertFalse(success);

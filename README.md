@@ -276,7 +276,7 @@ excelutil提供了5种注解用于数据转换，基本能够满足数据转换�
 
   当预设注解无法满足要求是，可以通过该注解引入自定义注解，比如POJO属性表示当前时间，如`createTime`属性，此时需要自定义转换实现类：
 
-  1. 定义转换类实现`online.dinghuiye.api.resolution.convert.Convertor`接口
+  1. 定义转换类实现`online.dinghuiye.api.resolution.Convertor`接口
   ```java
   public class CurrentTimeConvertor implements Convertor { // 实现Covertor接口
 
@@ -434,3 +434,36 @@ importHandler.setRepairer(passwordMd5Repairer);
 3. ENUM转换器：@ValueEnum注解
 
 后期有时间再改进，要是没时间就只能暂时放下了...
+
+---
+
+# v2.0.0关于进度监控在不同事务形式下的的补充说明：
+
+- `SINGLETON`：所有过程会全部执行完成，进度会到达100%
+
+- `MULTIPLE`：解析和验证过程会执行完成，只有持久化过程出错后会停止执行，即进度不会到达100%（出于考虑：验证执行完方便导入用户更改所有错误，持久化不执行完只在不浪费时间）
+
+  特别注意的是：使用MULTIPLE整体事务时，执行存表报错后，通过遍历`RowRecordList`执行`RowRecord.getResult().getResult()`方法得到的存入状态依然可能为`SUCEESS`，这个结果仅作为表示存表前一切检查均通过的标识，其实实际上是没有任何数据存入数据库的，所以使用这种事务形式时，不能使用上述方法结果叠加来表示执行成功的数量，因为这种事务形式下，成功了就是所有数据都成功，失败就是没有任何数据存入库。
+
+---
+
+# v2.1.0更新说明
+
+更新内容：
+
+- 进度监控调整为整个导入过程的进度监控
+
+  更精确的进度监控，v2.0.0进度只在持久化层展示，考虑到validation阶段如果逐条查表验证也会非常慢，所以也加入到了进度监控，进度在各个阶段通过`ProcessNode`记录
+
+更新日志：
+
+- 用户接口变更：
+  1. `RowRecordPerPersistentRepairer`接口修改
+  2. 进度观察者`update(Observable obv, Obj arg)`的`arg`参数更改为`Process`对象
+
+
+- 程序内部变更：
+  1. 新增`ProcessNode`进度节点状态类
+  2. 修改接口`RowRecordHandler`，以及相应的实现修正
+  3. 修改接口`RowRecordValidator`，以及相应的实现修正
+  4. 修改接口`RowRecordPersistencor`，以及相应实现修改

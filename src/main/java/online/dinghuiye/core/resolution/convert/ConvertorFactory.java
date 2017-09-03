@@ -1,7 +1,7 @@
 package online.dinghuiye.core.resolution.convert;
 
 import online.dinghuiye.api.annotation.convert.Convert;
-import online.dinghuiye.api.resolution.convert.Convertor;
+import online.dinghuiye.api.resolution.Convertor;
 import online.dinghuiye.core.common.AnnotationFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,7 +16,10 @@ import java.util.Map;
 /**
  * 根据{@link Convert#value()}匹配转换器实现类
  *
- * @author Strangeen on 2017/6/30.
+ * @author Strangeen on 2017/6/30
+ *
+ * @author Strangeen on 2017/9/3
+ * @version 2.1.0
  */
 class ConvertorFactory {
 

@@ -1,6 +1,5 @@
 package online.dinghuiye.core.common.testcase;
 
-import online.dinghuiye.api.annotation.validate.Validate;
 import online.dinghuiye.core.annotation.convert.BlankToNull;
 import online.dinghuiye.core.annotation.convert.DateFormat;
 

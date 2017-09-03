@@ -8,7 +8,6 @@ import online.dinghuiye.core.annotation.convert.ValueMap;
 import online.dinghuiye.core.annotation.excel.SheetTitleName;
 import online.dinghuiye.core.annotation.excel.Transient;
 import online.dinghuiye.core.validation.CertCardUniqueValidator;
-import online.dinghuiye.core.validation.UsernameUniqueValidator;
 import org.hibernate.annotations.DynamicInsert;
 
 import javax.persistence.*;

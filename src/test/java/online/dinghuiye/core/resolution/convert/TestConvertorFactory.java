@@ -1,6 +1,6 @@
 package online.dinghuiye.core.resolution.convert;
 
-import online.dinghuiye.api.resolution.convert.Convertor;
+import online.dinghuiye.api.resolution.Convertor;
 import online.dinghuiye.core.resolution.convert.testcase.User;
 import online.dinghuiye.core.resolution.convert.testcase.Util;
 import org.junit.Assert;
@@ -11,7 +11,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by Strangeen on 2017/7/1.
+ * Created by Strangeen on 2017/7/1
+ *
+ * @author Strangeen on 2017/9/3
+ * @version 2.1.0
  */
 public class TestConvertorFactory {
 

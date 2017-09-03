@@ -6,7 +6,7 @@
 
     <groupId>online.dinghuiye</groupId>
     <artifactId>excelutil</artifactId>
-    <version>2.0.0</version>
+    <version>2.1.0</version>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -101,20 +101,20 @@
 
         <dependency>
             <groupId>online.dinghuiye</groupId>
-            <artifactId>excelutil-api</artifactId>
-            <version>2.0.0</version>
-        </dependency>
-
-        <dependency>
-            <groupId>online.dinghuiye</groupId>
             <artifactId>poi-kit</artifactId>
             <version>1.0.1</version>
         </dependency>
 
         <dependency>
             <groupId>online.dinghuiye</groupId>
+            <artifactId>excelutil-api</artifactId>
+            <version>2.1.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>online.dinghuiye</groupId>
             <artifactId>persistence-hibernate-impl</artifactId>
-            <version>2.0.0</version>
+            <version>2.1.0</version>
             <scope>test</scope>
         </dependency>
 

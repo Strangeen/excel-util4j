@@ -1,5 +1,6 @@
 package online.dinghuiye.core.validation;
 
+import online.dinghuiye.api.entity.Process;
 import online.dinghuiye.api.entity.ResultStatus;
 import online.dinghuiye.api.entity.RowRecord;
 import online.dinghuiye.api.entity.RowRecordHandleResult;
@@ -9,11 +10,13 @@ import online.dinghuiye.core.validation.testcase.UserExtraInfo;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+
 import java.util.*;
 
 /**
- * @author Strangeen
- * on 2017/08/09
+ * @author Strangeen on 2017/08/09
+ *
+ * @version 2.1.0 on 2017/9/3
  */
 public class TestRowRecordValidatorImplWithCascadePojos {
 
@@ -199,8 +202,10 @@ public class TestRowRecordValidatorImplWithCascadePojos {
 
         ResetTestValue.reset();
 
-        boolean success = validator.valid(rowRecordListForSuccess);
+        Process process = new Process((long) rowRecordListForSuccess.size());
+        boolean success = validator.valid(rowRecordListForSuccess, process);
 
+        Assert.assertEquals(new Double(100.0), process.getProcess());
         Assert.assertTrue(success);
         Assert.assertNull(rowRecordListForSuccess.get(0).getResult().getMsg());
         Assert.assertNull(rowRecordListForSuccess.get(1).getResult().getMsg());
@@ -211,7 +216,7 @@ public class TestRowRecordValidatorImplWithCascadePojos {
 
         ResetTestValue.reset();
 
-        boolean success = validator.valid(rowRecordList);
+        boolean success = validator.valid(rowRecordList, null);
 
         Assert.assertFalse(success);
 

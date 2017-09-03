@@ -1,7 +1,7 @@
 package online.dinghuiye.core.annotation.convert;
 
 import online.dinghuiye.api.annotation.convert.Convert;
-import online.dinghuiye.api.resolution.convert.Convertor;
+import online.dinghuiye.api.resolution.Convertor;
 import online.dinghuiye.core.resolution.convert.ValueConvertConvertor;
 
 import java.lang.annotation.ElementType;
@@ -12,8 +12,10 @@ import java.lang.annotation.Target;
 /**
  * 自定义转换
  *
- * @author Strangeen
- * on 2017/6/27
+ * @author Strangeen on 2017/6/27
+ *
+ * @author Strangeen on 2017/9/3
+ * @version 2.1.0
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)

@@ -1,6 +1,6 @@
 package online.dinghuiye.core.resolution.convert.testcase;
 
-import online.dinghuiye.api.resolution.convert.Convertor;
+import online.dinghuiye.api.resolution.Convertor;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -8,7 +8,10 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Created by Strangeen on 2017/7/2.
+ * Created by Strangeen on 2017/7/2
+ *
+ * @author Strangeen on 2017/9/3
+ * @version 2.1.0
  */
 public class ScoreConvertor implements Convertor {
 

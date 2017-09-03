@@ -5,8 +5,6 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import java.lang.reflect.Field;
-import java.util.Arrays;
-import java.util.stream.Collectors;
 
 /**
  * @author Strangeen on 2017/08/16

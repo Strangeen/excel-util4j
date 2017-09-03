@@ -1,6 +1,6 @@
 package online.dinghuiye.core.resolution.convert;
 
-import online.dinghuiye.api.resolution.convert.Convertor;
+import online.dinghuiye.api.resolution.Convertor;
 import online.dinghuiye.core.annotation.convert.BlankToNull;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -12,8 +12,10 @@ import java.util.Map;
 /**
  * {@link BlankToNull}注解实现类
  *
- * @author Strangeen
- * on 2017/7/1
+ * @author Strangeen on 2017/7/1
+ *
+ * @author Strangeen on 2017/9/3
+ * @version 2.1.0
  */
 public class BlankToNullConvertor implements Convertor {
 

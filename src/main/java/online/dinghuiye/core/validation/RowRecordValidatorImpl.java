@@ -1,10 +1,9 @@
 package online.dinghuiye.core.validation;
 
+import online.dinghuiye.api.entity.Process;
+import online.dinghuiye.api.entity.*;
 import online.dinghuiye.api.validation.RowRecordValidator;
-import online.dinghuiye.api.entity.ResultStatus;
-import online.dinghuiye.api.entity.RowRecord;
 import online.dinghuiye.core.resolution.torowrecord.RowRecordKit;
-import online.dinghuiye.api.entity.RowRecordHandleResult;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
@@ -19,8 +18,10 @@ import java.util.Set;
 /**
  * <p>hibernate validatior实现验证</p>
  *
- * @author Strangeen
- * on 2017/8/3
+ * @author Strangeen on 2017/8/3
+ *
+ * @author Strangeen on 2017/9/3
+ * @version 2.1.0
  */
 public class RowRecordValidatorImpl implements RowRecordValidator {
 
@@ -33,11 +34,15 @@ public class RowRecordValidatorImpl implements RowRecordValidator {
     }
 
     @Override
-    public boolean valid(List<RowRecord> rowRecordList) {
+    public boolean valid(List<RowRecord> rowRecordList, Process process) {
 
+        if (process != null)
+            process.setNode(ProcessNode.VALIDATION);
         boolean allSuccess = true;
         for (RowRecord rowRecord : rowRecordList) {
             if (!valid(rowRecord)) allSuccess = false;
+            if (process != null)
+                process.updateProcess(1);
         }
         return allSuccess;
     }

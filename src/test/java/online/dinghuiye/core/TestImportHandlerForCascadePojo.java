@@ -1,12 +1,12 @@
 package online.dinghuiye.core;
 
+import online.dinghuiye.api.entity.Process;
 import online.dinghuiye.api.entity.ResultStatus;
 import online.dinghuiye.api.entity.RowRecord;
 import online.dinghuiye.api.entity.TransactionMode;
 import online.dinghuiye.core.persistence.RowRecordPersistencorHibernateImpl;
 import online.dinghuiye.core.resolution.torowrecord.RowRecordHandlerImpl;
 import online.dinghuiye.core.validation.ResetTestValue;
-import online.dinghuiye.core.validation.testcase.SchoolMan;
 import online.dinghuiye.core.validation.testcase.User;
 import online.dinghuiye.excel.ExcelFactory;
 import org.hibernate.SessionFactory;
@@ -20,12 +20,14 @@ import org.junit.Test;
 import java.io.File;
 import java.util.List;
 import java.util.Observable;
-import java.util.Observer;
 import java.util.function.Function;
 import java.util.stream.IntStream;
 
 /**
- * Created by Strangeen on 2017/8/7.
+ * Created by Strangeen on 2017/8/7
+ *
+ * @author Strangeen on 2017/9/3
+ * @version 2.1.0
  */
 public class TestImportHandlerForCascadePojo {
 
@@ -68,7 +70,10 @@ public class TestImportHandlerForCascadePojo {
         List<RowRecord> list = handler.importExcel(
                 ExcelFactory.newExcel(new File("D:/test/userinfo.xls")),
                 1,
-                (Observable o, Object arg) -> System.out.println("进度：" + arg),
+                (Observable o, Object arg) -> {
+                    Process process = (Process) arg;
+                    System.out.println("进度：" + process.getProcess() + "，当前阶段：" + process.getNode());
+                },
                 User.class);
 
         list.forEach(rr -> System.out.println(rr.getResult().getMsg()));
@@ -161,7 +166,10 @@ public class TestImportHandlerForCascadePojo {
         List<RowRecord> list = handler.importExcel(
                 ExcelFactory.newExcel(new File("D:/test/userinfo_error.xlsx")),
                 1,
-                (Observable o, Object arg) -> System.out.println("进度：" + arg),
+                (Observable o, Object arg) -> {
+                    Process process = (Process) arg;
+                    System.out.println("进度：" + process.getProcess() + "，当前阶段：" + process.getNode());
+                },
                 User.class);
 
         list.forEach(rr -> {
